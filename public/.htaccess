@@ -1,0 +1,7 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Check for static file extensions and redirect all requests
+  RewriteCond %{REQUEST_URI} !\.(js|less|css|jpg|png|gif|html)$
+  RewriteRule ^.*$ index.php [L]
+</IfModule>
