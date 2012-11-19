@@ -124,3 +124,8 @@ function spf($format, $args=array()) {
 function add_define($key, $val) {
     defined($key) || define($key, $val);
 }
+
+function array_rand_value($array) {
+    $key = array_rand($array);
+    return $array[$key];
+}
