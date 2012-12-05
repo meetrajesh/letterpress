@@ -10,13 +10,8 @@ class security {
         return self::hmac_gen($secret, $data) == $provided;
     }
 
-    public static function gen_user_salt() {
-        // salt is 3 chars long
-        $salt = '';
-        foreach (range(1, USER_SALT_LEN) as $i) {
-            $salt .= chr(mt_rand(33, 126));
-        }
-        return $salt;
-    }
+	public static function get_rand_token() {
+		return sha1(microtime(1) . rand(1, 10000) . '%3m9*cK)=z2');
+	}
 
 }

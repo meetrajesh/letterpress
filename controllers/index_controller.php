@@ -7,12 +7,14 @@ class IndexController extends BaseController {
         $regex = '/^' . preg_quote(PATH_PREFIX, '/') . '/';
         $uri = preg_replace($regex, '', $_SERVER['REQUEST_URI']);
         $uri = strtolower($uri);
-        
-        $routes = array('/$' => array('index', 'index', array()), // empty route, just root domain
+
+        $routes = array('/$' => array('index', 'index'), // empty route, just root domain
+                        '/login' => array('index', 'login'),
                         '/404' => array('index', 'misc_page', array('404')),
                         );
 
         foreach ($routes as $route => $dest) {
+			$dest = array_pad($dest, 3, array());
             if (preg_match("#^${route}#", $uri, $match)) {
                 list($controller, $action, $args) = $dest;
                 $route_match = array_shift($match);
@@ -53,13 +55,34 @@ class IndexController extends BaseController {
 
     public function index() {
 
-        $letters = range('A', 'Z');
-        foreach (range(0,24) as $i) {
-            $table[$i] = array_rand_value($letters);
-        }
+		// check if we know who this user is
+		if (false === $token = session::get_login_token()) {
+			// show login screen
+			$this->_redirect('/login');
+		}
 
-        $data['table'] = $table;
-        $this->_render('index', $data);
+		// get the player and his/her games
+		$player = player::get($token);
+		$games = $player->get_games();
+
+		if (empty($games)) {
+			// initialize game
+			$data['table'] = game::create();
+			$this->_render('index', $data);
+		}
     }
+
+	public function login() {
+		if (!empty($_POST['email'])) {
+			$email = trim($_POST['email']);
+			if (!$token = player::exists($email)) {
+				$token = player::add($email);
+			}
+			session::set_login_token($token);
+			$this->_redirect('/');
+		} else {
+			$this->_render('login');
+		}
+	}
     
 }

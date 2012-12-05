@@ -35,18 +35,14 @@ class BaseController {
     protected function _add_css($files) {
         foreach ((array) $files as $file) {
             $path = STATIC_PREFIX . '/' . $file;
-            if (file_exists(WEB_ROOT . '/'. $path)) {
-                array_unshift($this->_stylesheets, $path);
-            }
+			array_unshift($this->_stylesheets, $path);
         }
     }
 
     protected function _add_js($files) {
         foreach ((array) $files as $file) {
             $path = STATIC_PREFIX . '/' . $file;
-            if (file_exists(WEB_ROOT . '/'. $path)) {
-                array_unshift($this->_scripts, $path);
-            }
+			array_unshift($this->_scripts, $path);
         }
     }
 

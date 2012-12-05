@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title><? $t->block('title'); ?>LetterPress in PHP<? $t->endblock(true); ?></title>
+    <title><? $t->block('title'); ?>Letterpress in PHP<? $t->endblock(true); ?></title>
     <meta name="description" content="">
     <meta property="og:site_name" content="Letterpress PHP" />
     <? $t->block('meta'); ?>

@@ -83,7 +83,7 @@ class db {
         return $res->num_rows > 0;
     }
 
-    public static function result_query($sql, $args=array()) {
+    public static function result($sql, $args=array()) {
         $args = func_get_args();
         $sql = array_shift($args);
         $row = self::query($sql, $args)->fetch_row();

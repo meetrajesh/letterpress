@@ -8,8 +8,8 @@ foreach ($data['table'] as $i => $letter) {
     if ($i != 0 && $i % 5 == 0) {
         echo '</tr><tr>';
     }
-    echo '<td> ' . $letter . '</td>';
-        
+    echo spf('<td data-coord="%d">%s</td>', hsc($i), hsc($letter));
+
 }
 
 ?>
