@@ -16,8 +16,8 @@ class GameController extends BaseController {
 
 	public function start($args) {
 		$gid = isset($args[0]) ? $args[0] : 0;
-		$player1 = player::get_current();
 		$game = empty($gid) ? $this->_redirect('/game/new') : game::get($gid);
+		$player1 = player::get_current();
 		$player2_email = isset($_POST['player2_email']) ? $_POST['player2_email'] : '';
 
 		if (empty($player2_email)) {
@@ -35,6 +35,22 @@ class GameController extends BaseController {
 			$this->_redirect('/game/new/' . $gid);
 		}
 
+		$this->move($args);
+	}
+
+	public function show($args) {
+		$gid = isset($args[0]) ? $args[0] : 0;
+		$data['form_action'] = $this->_url(spf('/game/move/%d', $gid));
+		$data['game'] = game::get($gid);
+		$this->_render('show', $data);
+	}
+
+	public function move($args) {
+		$gid = isset($args[0]) ? $args[0] : 0;
+		$game = empty($gid) ? $this->_redirect('/game/new') : game::get($gid);
+		$player1 = player::get_current();
+		$player2 = $game->player2;
+
 		if (empty($_POST['coords'])) {
 			$this->_set_flash('error', 'Please choose some letters to form a word');
 		} elseif (!$game->is_valid_word($_POST['coords'])) {
@@ -43,21 +59,12 @@ class GameController extends BaseController {
 
 		// if an error occurred
 		if ($this->_has_flash('error')) {
-			$this->_redirect('/game/play/' . $gid);
+			$this->_redirect('/game/show/' . $gid);
 		}
 
 		// no errors
 		$game->make_move($_POST['coords']);
-
-
-
 	}
 
-	public function play($args) {
-		$gid = isset($args[0]) ? $args[0] : 0;
-		$data['form_action'] = $this->_url('/game/move');
-		$data['game'] = game::get($gid);
-		$this->_render('show', $data);
-	}
 
 }

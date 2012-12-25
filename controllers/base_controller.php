@@ -57,19 +57,19 @@ class BaseController {
 
     }
 
-    protected function _render($template, $data=array()) {
+    protected function _render($tmpl, $data=array()) {
         $t = $this->_tpl;
-        require './views/' . $template . '.php';
+        require './views/' . $tmpl . '.php';
     }
 
 	public function _render_partial($partial, $data=array()) {
 		require './views/' . $partial . '.php';
 	}
 
-    protected function _buffer($template, $data=array()) {
+    protected function _buffer($tmpl, $data=array()) {
         $t = $this->_tpl;
         ob_start();
-        $this->_render($template, $data);
+        $this->_render($tmpl, $data);
         return ob_get_clean();
     }
 
