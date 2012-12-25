@@ -67,7 +67,7 @@ class IndexController extends BaseController {
 
 		if (empty($games)) {
 			// initialize game
-			$data['table'] = game::create();
+			$data['table'] = game::create($player);
 			$this->_render('index', $data);
 		}
     }

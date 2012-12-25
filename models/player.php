@@ -2,12 +2,17 @@
 
 class player {
 
-	private $id, $token, $email;
+	public $id, $token, $email;
 
 	public function __construct($player) {
 		foreach ($player as $key => $val) {
 			$this->$key = $val;
 		}
+	}
+
+	public static function get($token) {
+		$player = db::fetch_query('SELECT id, email, token FROM players WHERE token="%s"', $token);
+		return new player($player);
 	}
 
 	public function get_games() {
@@ -22,11 +27,6 @@ class player {
 
 	public static function exists($email) {
 		return db::result('SELECT token FROM players WHERE email="%s"', $email);
-	}
-
-	public static function get($token) {
-		$player = db::fetch_all('SELECT id, email, token FROM players WHERE token="%s"', $token);
-		return new player($player);
 	}
 
 	public static function add($email) {
