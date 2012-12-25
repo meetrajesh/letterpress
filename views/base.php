@@ -20,6 +20,10 @@
 </head>
 <body>
 
+    <h2>Welcome to Letterpress for the Web</h2>
+
+    <p>With this version of letterpress, you don&#39;t need an iphone, or a game center account! All you need is an email address to play.</p>
+
     <div class="container_12" id="main-content">
         <? $t->block('content'); ?>
         <? $t->endblock(true); ?>

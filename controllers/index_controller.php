@@ -7,15 +7,8 @@ class IndexController extends BaseController {
     }
 
     public function index() {
-
-		// check if we know who this user is
-		if (false === $token = session::get_login_token()) {
-			// show login screen
-			$this->_redirect('/login');
-		}
-
 		// get the player and his/her games
-		$player = player::get_by_token($token);
+		$player = player::get_current();
 		$games = $player->get_games();
 
 		if (empty($games)) {

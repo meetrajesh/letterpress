@@ -49,6 +49,15 @@ class game extends model_base {
 
 	}
 
+	private function _is_game_over() {
+		// check if game is over (i.e. every tile is used up)
+		return count(array_unique(array_merge($this->player1_tiles, $this->player2_tiles))) == 25;
+	}
+
+	private function _determine_winner() {
+		return (count($this->player1_tiles) > count($this->player2_tiles)) ? 'player1' : 'player2';
+	}
+
 	private function _neighbor_tiles($tile) {
 
 		$neighbors = array();
@@ -161,12 +170,10 @@ class game extends model_base {
 		} elseif (!$this->_is_valid_word($word)) {
 			return 'Sorry, your word could not be found in the Letterpress dictionary';
 		} elseif ($this->_is_word_played($word)) {
-			return 'Sorry, you\'ve already played this word or a word containing it before';
+			return 'Sorry, that word or a word containing it has already been played';
 		}
 
 		return true;
 	}
-
-
 
 }

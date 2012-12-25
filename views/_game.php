@@ -2,12 +2,13 @@
 $game = $data['game'];
 $myturn = (player::get_current()->id == $game->current_player->id);
 $other_player = (player::get_current()->id == $game->player1->id) ? $game->player2 : $game->player1;
+
 ?>
 
 <form method="post" action="<?=$data['form_action']?>">
     <?=csrf::html_tag()?>
 
-    <? if (empty($game->player2)): ?>
+    <? if (empty($other_player->id)): ?>
         <p>Start a new game with (type friend&#39;s email):
         <input type="text" name="player2_email" size="30" /></p>
     <? elseif ($myturn): ?>

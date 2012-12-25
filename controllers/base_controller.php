@@ -52,7 +52,7 @@ class BaseController {
 
         $class = ucwords($controller) . 'Controller';
         $obj = new $class;
-		$obj->_before_render($action);
+		$obj->_before_render(array($controller, $action));
         $obj->$action($args);
 
     }
@@ -140,9 +140,22 @@ class BaseController {
 		return isset($_SESSION['flash'][$key]);
 	}
 
-	protected function _before_render() {
+	protected function _before_render($action) {
 		$this->_add_js('js/game.js');
 		$this->_add_css('css/main.css');
+
+		$this->_attempt_login($action);
+	}
+
+	private function _attempt_login($action) {
+		if ($action === array('index', 'login')) {
+			return;
+		}
+		// check if we know who this user is
+		if (false === $token = session::get_login_token()) {
+			// show login screen
+			$this->_redirect('/login');
+		}
 	}
 
 }
