@@ -137,3 +137,8 @@ function is_valid_email($email) {
         '([0-9A-Z]){2,4}$/i',                  // top-level domain (TLD)
         trim($email)) > 0;
 }
+
+// just like regular explode, but removes empty strings
+function myexplode($delim, $str) {
+	return array_diff(explode($delim, $str), array(''));
+}

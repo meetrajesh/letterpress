@@ -50,20 +50,15 @@ class GameController extends BaseController {
 		$game = empty($gid) ? $this->_redirect('/game/new') : game::get($gid);
 		$player1 = player::get_current();
 		$player2 = $game->player2;
+		$coords = !empty($_POST['coords']) ? trim($_POST['coords']) : '';
 
-		if (empty($_POST['coords'])) {
-			$this->_set_flash('error', 'Please choose some letters to form a word');
-		} elseif (!$game->is_valid_word($_POST['coords'])) {
-			$this->_set_flash('error', 'Invalid word');
-		}
-
-		// if an error occurred
-		if ($this->_has_flash('error')) {
+		if (true !== $error = $game->make_move($coords)) {
+			$this->_set_flash('error', $error);
 			$this->_redirect('/game/show/' . $gid);
 		}
 
 		// no errors
-		$game->make_move($_POST['coords']);
+		$this->_redirect('/game/show/' . $gid);
 	}
 
 

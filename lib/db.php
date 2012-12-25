@@ -15,7 +15,7 @@ class db {
         self::$num_queries++;
         $result = $db->query($sql);
         if (!$result) {
-            error('SQL error: ' . $db->error);
+            error('SQL error: ' . $db->error . ': ' . $sql);
         }
         return $result;
     }

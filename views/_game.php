@@ -11,7 +11,7 @@
 	<? endif; ?>
     
     <input type="hidden" id="coords" name="coords" />
-    <p id="letters"></p>
+    <p id="letters">Your word: <span id="word"></span></p>
       
     <div class="table">
         <table>

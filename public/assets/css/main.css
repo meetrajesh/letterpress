@@ -15,6 +15,10 @@ td.disabled {
   color: grey;
 }
 
+p#letters {
+  height: 20px;
+}
+
 .alert {
   padding: 8px 35px 8px 14px;
   margin-bottom: 18px;

@@ -9,7 +9,7 @@
 		for (coord in coords) {
 			str += " " + letters[coords[coord]];
 		}
-		$('#letters').text(str);
+		$('#word').text(str);
 	}
 
 	$('td').on('click', function(el) {
