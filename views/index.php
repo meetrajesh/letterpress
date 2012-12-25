@@ -5,7 +5,8 @@
 
 <? $t->block('content'); ?>
 
-  <form method="post">
+<form method="post">
+    <?=csrf::html_tag()?>
     <p>Start a new game with (type email of friend):
     <input type="text" name="player2_email" size="30" /></p>
   

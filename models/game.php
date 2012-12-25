@@ -1,6 +1,15 @@
 <?php
 
-class game {
+class game extends model_base {
+
+	public $id;
+	public $player1_id;
+	public $player2_id;
+	public $letters;
+
+	public static function get($id) {
+		return self::_assign_db_row_to_obj(new game, 'games', $id);
+	}
 
 	public static function create(player $player) {
 		$letters = range('A', 'Z');
@@ -9,7 +18,11 @@ class game {
         }
 
 		db::query('INSERT INTO games (player1_id, letters) VALUES (%d, "%s")', $player->id, implode(',', $table));
-        return $table;
+        return self::get(db::insert_id());
+	}
+
+	public function get_table() {
+		return explode(',', $this->letters);
 	}
 
 }

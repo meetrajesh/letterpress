@@ -15,7 +15,7 @@ class csrf {
         return security::hmac_gen(CSRF_SECRET, $unique);
     }
 
-    public static function html() {
+    public static function html_tag() {
         return '<input type="hidden" name="csrf" value="' . hsc(self::token()) . '">' . "\n";
     }
 

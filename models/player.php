@@ -1,26 +1,26 @@
 <?php
 
-class player {
+class player extends model_base {
 
 	public $id, $token, $email;
 
-	public function __construct($player) {
-		foreach ($player as $key => $val) {
-			$this->$key = $val;
-		}
+	public static function get($id) {
+		return self::_assign_db_row_to_obj(new player, 'players', $id);
 	}
 
-	public static function get($token) {
-		$player = db::fetch_query('SELECT id, email, token FROM players WHERE token="%s"', $token);
-		return new player($player);
+	public static function get_by_token($token) {
+		return self::_assign_db_row_to_obj(new player, 'players', $token, 'token');
+	}
+
+	public static function get_current_player() {
+		return self::get_by_token(session::get_login_token());
 	}
 
 	public function get_games() {
-
 		$games = array();
-		$game_ids = db::fetch_all('SELECT id FROM games WHERE player1_id=%d OR player2_id=%1$d', $this->id);
-		foreach ($game_ids as $game_id) {
-			$games[] = new game($game_id);
+		$game_ids = db::fetch_all('SELECT id FROM games WHERE (player1_id=%d OR player2_id=%1$d) AND player1_id*player2_id != 0', $this->id);
+		foreach ($game_ids as $game) {
+			$games[] = game::get($game['id']);
 		}
 		return $games;
 	}

@@ -9,6 +9,7 @@ class IndexController extends BaseController {
         $uri = strtolower($uri);
 
         $routes = array('/$' => array('index', 'index'), // empty route, just root domain
+                        '/game/new' => array('index', 'new_game'),
                         '/login' => array('index', 'login'),
                         '/404' => array('index', 'misc_page', array('404')),
                         );
@@ -62,15 +63,23 @@ class IndexController extends BaseController {
 		}
 
 		// get the player and his/her games
-		$player = player::get($token);
+		$player = player::get_by_token($token);
 		$games = $player->get_games();
 
 		if (empty($games)) {
-			// initialize game
-			$data['table'] = game::create($player);
-			$this->_render('index', $data);
+			$this->_redirect('/game/new');
 		}
+
+		$data['games'] = $games;
+		$this->_render('index', $data);
     }
+
+	public function new_game() {
+		$player = player::get_current_player();
+		// initialize new game
+		$data['games'][0] = game::create($player);
+		$this->_render('index', $data);
+	}
 
 	public function login() {
 		if (!empty($_POST['email'])) {
