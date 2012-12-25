@@ -6,13 +6,13 @@
 <? $t->block('content'); ?>
 
   <form method="post">
-    <p>Start a new game with:
+    <p>Start a new game with (type email of friend):
     <input type="text" name="player2_email" size="30" /></p>
   
     <? include 'game.php'; ?>
   
-    <input type="text" id="coords" name="coords" />
-    <input type="text" id="letters" name="letters" />
+    <input type="hidden" id="coords" name="coords" />
+    <p id="letters"></p>
   
     <p><input type="submit" name="btn_submit" value="Start new game!" /></p>
   

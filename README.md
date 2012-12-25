@@ -1,7 +1,9 @@
-LetterPress PHP
+Letterpress PHP
 ===============
 
-Dev Setup Instructions
+This is a clone of the popular iOS app Letterpress using purely PHP and Javascript.
 
+Dev Setup Instructions
+----------------------
 
 
