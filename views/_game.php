@@ -21,7 +21,19 @@
                 	if ($i != 0 && $i % 5 == 0) {
                 		echo '</tr><tr>';
                 	}
-                	echo spf('<td data-coord="%d">%s</td>', hsc($i), hsc($letter));
+					// figure out the state of this tile
+					$class = '';
+					if (player::get_current()->id == $game->player1_id && in_array($i, $game->player1_tiles) ||
+						(player::get_current()->id == $game->player2_id && in_array($i, $game->player2_tiles))) {
+						$class = 'cplayer';
+					} elseif (player::get_current()->id == $game->player1_id && in_array($i, $game->player2_tiles) ||
+						(player::get_current()->id == $game->player1_id && in_array($i, $game->player1_tiles))) {
+						$class = 'oplayer';
+					}
+					if ($game->is_tile_locked($i)) {
+						$class .= ' locked';
+					}
+                	echo spf('<td class="%s" data-coord="%d">%s</td>', $class, hsc($i), hsc($letter));
                 }
                 ?>
             </tr>

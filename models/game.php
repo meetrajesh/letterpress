@@ -6,6 +6,7 @@ class game extends model_base {
 	public $player1_id, $player1, $player1_tiles, $player1_locked_tiles;
 	public $player2_id, $player2, $player2_tiles, $player2_locked_tiles;
 	public $letters;
+	public $current_player_id, $current_player;
 
 	public static function get($id) {
 		$game = self::_assign_db_row_to_obj(new game, 'games', $id);
@@ -17,8 +18,14 @@ class game extends model_base {
 		$game->player1_tiles = myexplode(',', $game->player1_tiles);
 		$game->player2_tiles = myexplode(',', $game->player2_tiles);
 
+		$game->current_player = player::get($game->current_player_id);
+
 		$game->_find_locked_tiles();
 		return $game;
+	}
+
+	private function current_turn() {
+		return ($this->current_player->id == $this->player1->id) ? 'player1' : 'player2';
 	}
 
 	private function _find_locked_tiles() {
@@ -76,7 +83,7 @@ class game extends model_base {
             $table[$i] = array_rand_value($letters);
         }
 
-		db::query('INSERT INTO games (player1_id, letters, created_at) VALUES (%d, "%s", NOW())', $player->id, implode(',', $table));
+		db::query('INSERT INTO games (player1_id, current_player_id, letters, created_at) VALUES (%d, %1$d, "%s", NOW())', $player->id, implode(',', $table));
         return self::get(db::insert_id());
 	}
 
@@ -96,19 +103,32 @@ class game extends model_base {
 
 		$this->_determine_new_tile_owners($coords);
 
+		// update current player to be the other player
+		#$this->current_player_id = ($this->current_turn() == 'player1') ? $this->player2->id : $this->player1->id;
+
 		// save new tile owners
-		db::query('UPDATE games SET player1_tiles="%s" WHERE id=%d', implode(',', $this->player1_tiles), $this->id);
-		db::query('UPDATE games SET player2_tiles="%s" WHERE id=%d', implode(',', $this->player2_tiles), $this->id);
+		db::query('UPDATE games SET player1_tiles="%s", player2_tiles="%s", current_player_id=%d WHERE id=%d', implode(',', $this->player1_tiles), implode(',', $this->player2_tiles), $this->current_player_id, $this->id);
 
 		// save word in db
 		#db::query('INSERT INTO words_played (game_id, word) VALUES (%d, "%s")', $this->id, $word);
+
 	}
 
 	private function _determine_new_tile_owners($coords) {
-		$new_coords = array_diff($coords, $this->player2_locked_tiles);
-		$this->player1_tiles = array_merge($this->player1_tiles, $new_coords);
-		$this->player2_tiles = array_diff($this->player2_tiles, $new_coords);
-		$this->_find_locked_tiles();
+		if ($this->current_turn() == 'player1') {
+			$new_coords = array_diff($coords, $this->player2_locked_tiles);
+			$this->player1_tiles = array_unique(array_merge($this->player1_tiles, $new_coords));
+			$this->player2_tiles = array_diff($this->player2_tiles, $new_coords);
+		} else {
+			$new_coords = array_diff($coords, $this->player1_locked_tiles);
+			$this->player2_tiles = array_unique(array_merge($this->player2_tiles, $new_coords));
+			$this->player1_tiles = array_diff($this->player1_tiles, $new_coords);
+		}
+
+	}
+
+	public function is_tile_locked($tile) {
+		return in_array($tile, $this->player1_locked_tiles) || in_array($tile, $this->player2_locked_tiles);
 	}
 
 	private function _get_word_from_coords($coords) {
