@@ -136,6 +136,10 @@ class BaseController {
 		return $flash;
 	}
 
+	protected function _has_flash($key) {
+		return isset($_SESSION['flash'][$key]);
+	}
+
 	protected function _before_render() {
 		$this->_add_js('js/game.js');
 		$this->_add_css('css/main.css');

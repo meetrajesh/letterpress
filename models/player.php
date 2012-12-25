@@ -12,7 +12,11 @@ class player extends model_base {
 		return self::_assign_db_row_to_obj(new player, 'players', $token, 'token');
 	}
 
-	public static function get_current_player() {
+	public static function get_by_email($email) {
+		return self::_assign_db_row_to_obj(new player, 'players', $email, 'email');
+	}
+
+	public static function get_current() {
 		return self::get_by_token(session::get_login_token());
 	}
 
@@ -30,8 +34,11 @@ class player extends model_base {
 	}
 
 	public static function add($email) {
-		$token = security::get_rand_token();
-		db::query('INSERT INTO players SET email="%s", token="%s"', $email, $token);
+		$token = self::exists($email);
+		if (!$token) {
+			$token = security::get_rand_token();
+			db::query('INSERT INTO players (email, token, created_at) VALUES ("%s", "%s", NOW())', $email, $token);
+		}
 		return $token;
 	}
 

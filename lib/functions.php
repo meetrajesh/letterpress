@@ -128,3 +128,12 @@ function add_define($key, $val) {
 function array_rand_value($array) {
     return $array[array_rand($array)];
 }
+
+function is_valid_email($email) {
+	return preg_match(
+        "/^[-!#$%&'*+\.\/0-9=?A-Z^_`{|}~]+" .  // the user name
+        '@' .                                  // the ubiquitous at-sign
+        '([-0-9A-Z]+.)+' .                     // host, sub-, and domain names
+        '([0-9A-Z]){2,4}$/i',                  // top-level domain (TLD)
+        trim($email)) > 0;
+}
