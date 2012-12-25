@@ -12,7 +12,7 @@
 		$('#word').text(str);
 	}
 
-	$('td').on('click', function(el) {
+	$('div.table td').on('click', function(el) {
 		var td = $(el.target);
 		var coord = td.attr('data-coord');
 		var coord_index = $.inArray(coord, coords); // IE < 9 compliant

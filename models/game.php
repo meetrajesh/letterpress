@@ -24,7 +24,7 @@ class game extends model_base {
 		return $game;
 	}
 
-	private function current_turn() {
+	public function current_turn() {
 		return ($this->current_player->id == $this->player1->id) ? 'player1' : 'player2';
 	}
 
@@ -104,13 +104,13 @@ class game extends model_base {
 		$this->_determine_new_tile_owners($coords);
 
 		// update current player to be the other player
-		#$this->current_player_id = ($this->current_turn() == 'player1') ? $this->player2->id : $this->player1->id;
+		$this->current_player_id = ($this->current_turn() == 'player1') ? $this->player2->id : $this->player1->id;
 
 		// save new tile owners
 		db::query('UPDATE games SET player1_tiles="%s", player2_tiles="%s", current_player_id=%d WHERE id=%d', implode(',', $this->player1_tiles), implode(',', $this->player2_tiles), $this->current_player_id, $this->id);
 
 		// save word in db
-		#db::query('INSERT INTO words_played (game_id, word) VALUES (%d, "%s")', $this->id, $word);
+		db::query('INSERT INTO words_played (game_id, word) VALUES (%d, "%s")', $this->id, $word);
 
 	}
 
@@ -124,7 +124,6 @@ class game extends model_base {
 			$this->player2_tiles = array_unique(array_merge($this->player2_tiles, $new_coords));
 			$this->player1_tiles = array_diff($this->player1_tiles, $new_coords);
 		}
-
 	}
 
 	public function is_tile_locked($tile) {
