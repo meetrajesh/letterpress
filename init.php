@@ -31,3 +31,14 @@ foreach (array('_GET', '_POST', '_REQUEST', '_COOKIE') as $sglobal) {
         $$sglobal[$k] = trim((string) $v);
     }
 }
+
+$routes = array('/$' => array('index', 'index'), // empty route, just root domain
+				'/game/new' => array('game', 'new_game'),
+				'/game/start' => array('game', 'start'),
+				'/game/show' => array('game', 'show'),
+				'/login' => array('index', 'login'),
+				'/404' => array('index', 'misc_page', array('404')),
+				);
+
+return $routes;
+

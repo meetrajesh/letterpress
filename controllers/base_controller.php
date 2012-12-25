@@ -16,14 +16,55 @@ class BaseController {
         }
     }
 
+    public static function route($routes) {
+
+        $regex = '/^' . preg_quote(PATH_PREFIX, '/') . '/';
+        $uri = preg_replace($regex, '', $_SERVER['REQUEST_URI']);
+        $uri = strtolower($uri);
+
+        foreach ($routes as $route => $dest) {
+			$dest = array_pad($dest, 3, array());
+            if (preg_match("#^${route}#", $uri, $match)) {
+                list($controller, $action, $args) = $dest;
+                $route_match = array_shift($match);
+
+                // grab any regex matches if they exist
+                if (!empty($match)) {
+                    $args = array_merge($args, $match);
+                }
+
+                // parse the rest of the uri for additional args
+				$uri = str_replace($route_match, '', $uri);
+                $uri = trim($uri, '/');
+                if (!empty($uri)) {
+                    $args = array_merge($args, explode('/', $uri));
+                }
+                break;
+            }
+        }
+
+        #v($controller, $action, $args); exit;
+
+        // 404
+        if (empty($controller)) {
+            list($controller, $action, $args) = array('index', 'notfound_404', array());
+        }
+
+        $class = ucwords($controller) . 'Controller';
+        $obj = new $class;
+		$obj->_before_render($action);
+        $obj->$action($args);
+
+    }
+
     protected function _render($template, $data=array()) {
         $t = $this->_tpl;
-
-        $data['errors'] = $this->_errors;
-        $data['msgs'] = $this->_msgs;
-
         require './views/' . $template . '.php';
     }
+
+	public function _render_partial($partial, $data=array()) {
+		require './views/' . $partial . '.php';
+	}
 
     protected function _buffer($template, $data=array()) {
         $t = $this->_tpl;
@@ -69,6 +110,10 @@ class BaseController {
         exit;
     }
 
+	protected function _url($path) {
+		return spf('%s/%s', rtrim(PATH_PREFIX, '/'), ltrim($path, '/'));
+	}
+
     protected function _get_view_data($data) {
         $view_data = array();
         $optional_keys = array();
@@ -80,5 +125,20 @@ class BaseController {
         }
         return $view_data;
     }
+
+	protected function _set_flash($key, $val) {
+		$_SESSION['flash'][$key] = $val;
+	}
+
+	protected function _get_flash($key) {
+		$flash = $_SESSION['flash'][$key];
+		unset($_SESSION['flash'][$key]);
+		return $flash;
+	}
+
+	protected function _before_render() {
+		$this->_add_js('js/game.js');
+		$this->_add_css('css/main.css');
+	}
 
 }

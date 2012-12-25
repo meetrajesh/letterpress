@@ -1,5 +1,5 @@
 <?php
 
-require '../init.php';
+$routes = require '../init.php';
 
-IndexController::route();
+IndexController::route($routes);
