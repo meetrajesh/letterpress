@@ -37,6 +37,7 @@ $routes = array('/$' => array('index', 'index'), // empty route, just root domai
 				'/game/start' => array('game', 'start'),
 				'/game/show' => array('game', 'show'),
 				'/game/move' => array('game', 'move'),
+				'/game/delete' => array('game', 'delete'),
 				'/login' => array('index', 'login'),
 				'/404' => array('index', 'misc_page', array('404')),
 				);

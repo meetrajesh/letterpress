@@ -62,5 +62,14 @@ class GameController extends BaseController {
 		$this->_redirect('/');
 	}
 
-
+	public function delete($args) {
+		$gid = isset($args[0]) ? $args[0] : 0;
+		$game = game::get($gid);
+		if ($game && $game->id) {
+			if (in_array(player::get_current()->id, array($game->player1_id, $game->player2_id))) {
+				$game->delete();
+			}
+		}
+		$this->_redirect('/');
+	}
 }

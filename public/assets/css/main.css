@@ -10,6 +10,10 @@ div.disabled {
   background-color: #ededed;
 }
 
+a.warning {
+  border: 1px red solid;
+}
+
 td {
   padding: 15px;
   border: 1px #000 solid;

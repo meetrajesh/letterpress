@@ -41,4 +41,10 @@
 
 		update_fields(gid);
 	});
+
+	// delete warning
+	$('a.warning').click(function() {
+			return confirm('Are you sure?');
+	});
+
 })(jQuery);

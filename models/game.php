@@ -7,10 +7,17 @@ class game extends model_base {
 	public $player2_id, $player2, $player2_tiles, $player2_locked_tiles;
 	public $letters;
 	public $current_player_id, $current_player;
+	public $is_deleted = 0;
 
 	public static function get($id) {
 		$game = self::_assign_db_row_to_obj(new game, 'games', $id);
 		$game->letters = myexplode(',', $game->letters);
+
+		// check deleted status
+		if ($game->is_deleted) {
+			$game->id = null;
+			return self::_assign_db_row_to_obj($game, 'games', 0);
+		}
 
 		$game->player1 = player::get($game->player1_id);
 		$game->player2 = player::get($game->player2_id);
@@ -201,7 +208,7 @@ class game extends model_base {
 	}
 
 	private function _is_valid_word($word) {
-		return true;
+		# return true;
 		$cmd = spf('grep -iP "^%s$" /usr/share/dict/words', $word);
 		$result = shell_exec($cmd);
 		return !empty($result);
@@ -223,6 +230,10 @@ class game extends model_base {
 
 	public function form_action() {
 		return spf(empty($this->player2->id) ? '/game/start/%d' : '/game/move/%d', $this->id);
+	}
+
+	public function delete() {
+		db::query('UPDATE games SET is_deleted=1 WHERE id=%d', $this->id);
 	}
 
 }

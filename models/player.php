@@ -32,7 +32,7 @@ class player extends model_base {
 
 	public function get_games() {
 		$games = array();
-		$game_ids = db::fetch_all('SELECT id FROM games WHERE (player1_id=%d OR player2_id=%1$d) AND player1_id*player2_id != 0 ORDER BY id DESC', $this->id);
+		$game_ids = db::fetch_all('SELECT id FROM games WHERE is_deleted=0 AND (player1_id=%d OR player2_id=%1$d) AND player1_id*player2_id != 0 ORDER BY id DESC', $this->id);
 		foreach ($game_ids as $game) {
 			$games[] = game::get($game['id']);
 		}

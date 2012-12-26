@@ -63,10 +63,10 @@ $other_player = (player::get_current()->id == $game->player1->id) ? $game->playe
         </table>
     </div>
 
-    <? if (empty($game->player2)): ?>
-        <p><input type="submit" name="btn_submit" value="Start new game!" /></p>
-    <? elseif ($game_active): ?>
-        <p><input type="submit" name="btn_submit" value="Submit Move!" /></p>
+    <p><input type="submit" name="btn_submit" value="Submit Move!" /></p>
+
+    <? if (!empty($game->player2->id)): ?>
+        <p><a class="warning" href="<?=$this->_url('/game/delete/' . $game->id)?>">Delete Game</a></p>
 	<? endif; ?>
 </form>
 
