@@ -1,6 +1,7 @@
 <?
 $game = $data['game'];
 $myturn = (player::get_current()->id == $game->current_player->id);
+$game_active = $myturn && !$game->is_game_over();
 $other_player = (player::get_current()->id == $game->player1->id) ? $game->player2 : $game->player1;
 ?>
 
@@ -10,6 +11,15 @@ $other_player = (player::get_current()->id == $game->player1->id) ? $game->playe
     <? if (empty($other_player->id)): ?>
         <p>Start a new game with (type friend&#39;s email):
         <input type="text" name="player2_email" size="30" /></p>
+    <? elseif ($game->is_game_over()): ?>
+        <p>
+            <strong>Game over!</strong>
+            <? if ($game->determine_winner()->id == player::get_current()->id): ?>
+                You won!
+            <? else: ?>
+				You lost :(
+            <? endif; ?>
+        </p>
     <? elseif ($myturn): ?>
         <p><strong>Your move with <?=hsc($other_player->email)?>!</strong></p>
     <? else: ?>
@@ -19,7 +29,7 @@ $other_player = (player::get_current()->id == $game->player1->id) ? $game->playe
     <input type="hidden" id="coords_<?=$game->id?>" name="coords" />
     <p class="letters">Your word: <span id="word_<?=$game->id?>"></span></p>
       
-    <div class="<?=$myturn ? 'enabled' : 'disabled'?>" game-id="<?=$game->id?>">
+    <div class="<?=$game_active ? 'enabled' : 'disabled'?>" game-id="<?=$game->id?>">
         <table>
             <tr>
                 <?php
@@ -29,6 +39,7 @@ $other_player = (player::get_current()->id == $game->player1->id) ? $game->playe
                 	}
 					// figure out the state of this tile
 					$class = '';
+					// if i am player 1
 					if (player::get_current()->id == $game->player1->id) {
 						if (in_array($i, $game->player1_tiles)) {
 							$class = 'cplayer';
@@ -54,7 +65,7 @@ $other_player = (player::get_current()->id == $game->player1->id) ? $game->playe
 
     <? if (empty($game->player2)): ?>
         <p><input type="submit" name="btn_submit" value="Start new game!" /></p>
-    <? elseif ($myturn): ?>
+    <? elseif ($game_active): ?>
         <p><input type="submit" name="btn_submit" value="Submit Move!" /></p>
 	<? endif; ?>
 </form>

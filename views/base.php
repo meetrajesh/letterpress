@@ -26,7 +26,8 @@
 
     <h2>Welcome to Letterpress for the Web</h2>
 
-    <p>With this version of letterpress, you don&#39;t need an iPhone, or a Game Center account! All you need is an email address to play.</p>
+    <p>With this clone of the popular iOS game Letterpress, you don&#39;t need an iPhone, an iPad, or a Game Center account!</p>
+    <p>All you need is an email address to play.</p>
     <hr/>
 
     <div class="container_12" id="main-content">

@@ -29,7 +29,6 @@ class game extends model_base {
 	}
 
 	private function _find_locked_tiles() {
-
 		foreach (range(1,2) as $i) {
 			$var = spf('player%d_tiles', $i);
 			$tiles = $this->$var;
@@ -46,16 +45,15 @@ class game extends model_base {
 			$var = spf('player%d_locked_tiles', $i);
 			$this->$var = $locked_tiles;
 		}
-
 	}
 
-	private function _is_game_over() {
+	public function is_game_over() {
 		// check if game is over (i.e. every tile is used up)
 		return count(array_unique(array_merge($this->player1_tiles, $this->player2_tiles))) == 25;
 	}
 
-	private function _determine_winner() {
-		return (count($this->player1_tiles) > count($this->player2_tiles)) ? 'player1' : 'player2';
+	public function determine_winner() {
+		return (count($this->player1_tiles) > count($this->player2_tiles)) ? $this->player1 : $this->player2;
 	}
 
 	private function _neighbor_tiles($tile) {
@@ -121,6 +119,7 @@ class game extends model_base {
 		// save word in db
 		db::query('INSERT INTO words_played (game_id, word) VALUES (%d, "%s")', $this->id, $word);
 
+		return true;
 	}
 
 	private function _determine_new_tile_owners($coords) {
