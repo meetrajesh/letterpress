@@ -19,13 +19,16 @@ class IndexController extends BaseController {
 		$this->_render('index', $data);
     }
 
-	public function login() {
+	public function login($args) {
 		if (player::get_current()) {
 			$this->_redirect('/');
 		}
 
-		if (!empty($_POST['email'])) {
-			$email = trim($_POST['email']);
+		$email = !empty($_POST['email']) ? $_POST['email'] : '';
+		$email = !empty($args[0]) ? $args[0] : '';
+		$email = trim($email);
+
+		if (!empty($email)) {
 			if (!is_valid_email($email)) {
 				$this->_set_flash('error', 'Please enter a valid email address');
 			} else {

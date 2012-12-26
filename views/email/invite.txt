@@ -5,7 +5,7 @@ Dear {player2},
 Letterpress is a word game that helps you improve your vocabulary.
 
 Start your game here:
-{game_url}
+{game_url}/login/{player2}
 
 Have fun!
 The Letterpress Team
