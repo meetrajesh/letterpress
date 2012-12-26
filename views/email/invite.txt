@@ -1,0 +1,11 @@
+Dear {player2},
+
+{player1} invited you to a game of Letterpress!
+
+Letterpress is a word game that helps you improve your vocabulary.
+
+Start your game here:
+{game_url}
+
+Have fun!
+The Letterpress Team

@@ -1,5 +1,6 @@
 <? $t->block('content'); ?>
     <? $this->_render_partial('_flash'); ?>
+    <? $this->_render_partial('_js_focus'); ?>
     <?
     foreach ($data['games'] as $i => $game) {
     	$data['game'] = $game;

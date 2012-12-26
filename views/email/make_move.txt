@@ -1,0 +1,9 @@
+Dear {player2},
+
+{player1} just played a move on Letterpress!
+
+Resume your game here:
+{game_url}
+
+Have fun!
+The Letterpress Team

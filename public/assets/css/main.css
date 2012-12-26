@@ -2,7 +2,7 @@ table {
   /* border-collapse: collapse; */
 }
 
-div.enabled {
+div.enabled table {
   cursor: pointer;
 }
 

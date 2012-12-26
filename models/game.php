@@ -96,9 +96,38 @@ class game extends model_base {
 
 	public function set_player_2($player2_email) {
 		player::add($player2_email);
-		$player2 = player::get_by_email($player2_email);
-		db::query('UPDATE games SET player2_id=%d WHERE id=%d', $player2->id, $this->id);
+		$this->player2 = player::get_by_email($player2_email);
+		db::query('UPDATE games SET player2_id=%d WHERE id=%d', $this->player2->id, $this->id);
 		return true;
+	}
+
+	private function _get_email_headers(player $player1) {
+		// figure out proper email headers
+		$headers[] = 'MIME-Version: 1.0';
+		$headers[] = 'Content-type: text/plain; charset=iso-8859-1';
+		$headers[] = spf("From: %s", $player1->email);
+		$headers[] = spf("Return-Path: %s", $player1->email);
+		return implode("\r\n", $headers) . "\r\n";
+	}
+
+	private function _send_email(player $player1, player $player2, $subject, $body_path) {
+		$to = $player2->email;
+		$body = str_replace(array('{player1}', '{player2}', '{game_url}'),
+							array($player1->email, $player2->email, BASE_URL . PATH_PREFIX),
+							file_get_contents($body_path));
+		return mail($to, $subject, $body, $this->_get_email_headers($player1));
+	}
+
+	private function _invite_opponent_by_email(player $player1, player $player2) {
+		$subject = spf('%s invited you to a game of Letterpress!', $player1->email);
+		$body_path = './views/email/invite.txt';
+		$this->_send_email($player1, $player2, $subject, $body_path);
+	}
+		
+	private function _send_email_notif_on_move(player $player1, player $player2) {
+		$subject = spf('%s just played a move on Letterpress!', $player1->email);
+		$body_path = './views/email/make_move.txt';
+		$this->_send_email($player1, $player2, $subject, $body_path);
 	}
 
 	public function make_move($coords) {
@@ -107,6 +136,8 @@ class game extends model_base {
 		if (true !== $error = $this->_validate_word($word)) {
 			return $error;
 		}
+
+		$is_first_move = $this->_is_first_move();
 
 		$this->_determine_new_tile_owners($coords);
 
@@ -119,7 +150,21 @@ class game extends model_base {
 		// save word in db
 		db::query('INSERT INTO words_played (game_id, word) VALUES (%d, "%s")', $this->id, $word);
 
+		if ($is_first_move) {
+			$this->_invite_opponent_by_email($this->player1, $this->player2);
+		} else {
+			if ($this->current_turn() == 'player1') {
+				$this->_send_email_notif_on_move($this->player1, $this->player2);
+			} else {
+				$this->_send_email_notif_on_move($this->player2, $this->player1);
+			}
+		}
+
 		return true;
+	}
+
+	private function _is_first_move() {
+		return count($this->player1_tiles) == 0 && count($this->player2_tiles) == 0;
 	}
 
 	private function _determine_new_tile_owners($coords) {
