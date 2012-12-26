@@ -7,6 +7,7 @@ if (file_exists('./init.local.php')) {
     require './init.local.php';
 }
 
+add_define('IS_DEV', false);
 ini_set('display_errors', IS_DEV);
 ini_set('html_errors', IS_DEV);
 
@@ -21,7 +22,7 @@ require './lib/functions.php';
 add_define('CSRF_SECRET', '<Bot:e,42DCRNW5b/hH7nBPIUaYn&lEA');
 add_define('UPLOAD_MAX_SIZE', 10*1024*1024); // 10M
 add_define('STATIC_PREFIX', '/public/assets');
-add_define('PATH_PREFIX', '/letterpress/public');
+add_define('PATH_PREFIX', '/letterpress'); // e. /letterpress
 add_define('WEB_ROOT', dirname(__FILE__) . PATH_PREFIX);
 add_define('TEMPLATE_ROOT', dirname(__FILE__) . '/views');
 
