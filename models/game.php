@@ -208,7 +208,7 @@ class game extends model_base {
 
 	private function _is_word_played($word) {
 		// mysql LIKE is case insensitive
-		return db::has_row('SELECT null FROM lp_words_played WHERE game_id=%d AND word LIKE "%%%s%%"', $this->id, $word);
+		return db::has_row('SELECT null FROM lp_words_played WHERE game_id=%d AND word LIKE "%s%%"', $this->id, $word);
 	}
 
 	private function _is_valid_word_length($word) {
