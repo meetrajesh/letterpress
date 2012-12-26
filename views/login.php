@@ -1,7 +1,3 @@
-<? 
-  $this->_add_css('css/main.css');
-?>
-
 <? $t->block('content'); ?>
 
 	<? $this->_render_partial('_flash') ?>

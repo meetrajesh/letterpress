@@ -20,7 +20,7 @@ require './lib/functions.php';
 // on phpsh
 add_define('CSRF_SECRET', '<Bot:e,42DCRNW5b/hH7nBPIUaYn&lEA');
 add_define('UPLOAD_MAX_SIZE', 10*1024*1024); // 10M
-add_define('STATIC_PREFIX', '/assets');
+add_define('STATIC_PREFIX', '/public/assets');
 add_define('PATH_PREFIX', '/letterpress/public');
 add_define('WEB_ROOT', dirname(__FILE__) . PATH_PREFIX);
 add_define('TEMPLATE_ROOT', dirname(__FILE__) . '/views');
