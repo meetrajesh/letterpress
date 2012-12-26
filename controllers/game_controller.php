@@ -58,7 +58,7 @@ class GameController extends BaseController {
 		}
 
 		// no errors
-		$this->_redirect('/game/show/' . $gid);
+		$this->_redirect('/');
 	}
 
 

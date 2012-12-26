@@ -2,7 +2,6 @@
 $game = $data['game'];
 $myturn = (player::get_current()->id == $game->current_player->id);
 $other_player = (player::get_current()->id == $game->player1->id) ? $game->player2 : $game->player1;
-
 ?>
 
 <form method="post" action="<?=$data['form_action']?>">
@@ -12,15 +11,15 @@ $other_player = (player::get_current()->id == $game->player1->id) ? $game->playe
         <p>Start a new game with (type friend&#39;s email):
         <input type="text" name="player2_email" size="30" /></p>
     <? elseif ($myturn): ?>
-        <p>Your move with <?=hsc($other_player->email)?>!</p>
+        <p><strong>Your move with <?=hsc($other_player->email)?>!</strong></p>
     <? else: ?>
         <p>Waiting for move from <?=hsc($other_player->email)?></p>
 	<? endif; ?>
     
-    <input type="hidden" id="coords" name="coords" />
-    <p id="letters">Your word: <span id="word"></span></p>
+    <input type="hidden" id="coords_<?=$game->id?>" name="coords" />
+    <p class="letters">Your word: <span id="word_<?=$game->id?>"></span></p>
       
-    <div <?=$myturn ? 'class="table"' : ''?>>
+    <div class="<?=$myturn ? 'enabled' : 'disabled'?>" game-id="<?=$game->id?>">
         <table>
             <tr>
                 <?php

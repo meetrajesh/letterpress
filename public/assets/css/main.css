@@ -2,8 +2,13 @@ table {
   /* border-collapse: collapse; */
 }
 
-div.table {
+div.enabled {
   cursor: pointer;
+}
+
+div.disabled {
+  background-color: #ddd;
+  width: 240px;
 }
 
 td {
@@ -31,7 +36,7 @@ td.oplayer.locked {
   background-color: maroon;
 }
 
-p#letters {
+p.letters {
   height: 20px;
 }
 

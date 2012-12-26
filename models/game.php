@@ -168,7 +168,7 @@ class game extends model_base {
 		} elseif (!$this->_is_valid_word_length($word)) {
 			return 'Your word must be at least 2 letters long';
 		} elseif (!$this->_is_valid_word($word)) {
-			return 'Sorry, your word could not be found in the Letterpress dictionary';
+			return spf('Sorry, your word "%s" could not be found in the Letterpress dictionary', strtolower($word));
 		} elseif ($this->_is_word_played($word)) {
 			return 'Sorry, that word or a word containing it has already been played';
 		}
