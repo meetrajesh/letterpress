@@ -102,7 +102,7 @@ class game extends model_base {
             $table[$i] = array_rand_value($letters);
         }
 
-		db::query('INSERT INTO lp_games (player1_id, current_player_id, letters, created_at) VALUES (%d, %1$d, "%s", NOW())', $player->id, implode(',', $table));
+		db::query('INSERT INTO lp_games (player1_id, current_player_id, letters, created_at) VALUES (%d, %1$d, "%s", now())', $player->id, implode(',', $table));
         return self::get(db::insert_id());
 	}
 
@@ -149,27 +149,30 @@ class game extends model_base {
 			return $error;
 		}
 
-		$is_first_move = $this->_is_first_move();
+		// players BEFORE the turn is made
+		$current_player = $this->current_player;
+		$other_player = ($this->_current_turn() == 'player1') ? $this->player2 : $this->player1;
 
+		// need to determine if this is the first MOVE before determining new tile owners (i.e. making the move)
+		$is_first_move = $this->_is_first_move();
 		$this->_determine_new_tile_owners($coords);
 
-		// update current player to be the other player
-		$this->current_player_id = ($this->_current_turn() == 'player1') ? $this->player2->id : $this->player1->id;
+		// save word in db for future checking
+		db::query('INSERT INTO lp_words_played (game_id, player_id, word, created_at) VALUES (%d, %d, "%s", now())', $this->id, $current_player->id, $word);
 
-		// save new tile owners
+		// flip current player to be the other player
+		$this->current_player_id = $other_player->id;
+		$this->current_player = $other_player;
+
+		// save new tile owners, and current_player_id
 		db::query('UPDATE lp_games SET player1_tiles="%s", player2_tiles="%s", current_player_id=%d WHERE id=%d', implode(',', $this->player1_tiles), implode(',', $this->player2_tiles), $this->current_player_id, $this->id);
 
-		// save word in db
-		db::query('INSERT INTO lp_words_played (game_id, word) VALUES (%d, "%s")', $this->id, $word);
-
+		// send emails if applicable
 		if ($is_first_move) {
+			// player1 always makes the first move
 			$this->_invite_opponent_by_email($this->player1, $this->player2);
 		} else {
-			if ($this->_current_turn() == 'player1') {
-				$this->_send_email_notif_on_move($this->player1, $this->player2);
-			} else {
-				$this->_send_email_notif_on_move($this->player2, $this->player1);
-			}
+			$this->_send_email_notif_on_move($current_player, $other_player);
 		}
 
 		return true;
