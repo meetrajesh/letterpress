@@ -157,6 +157,7 @@ class game extends model_base {
 	}
 
 	private function _is_valid_word($word) {
+		return true;
 		$cmd = spf('grep -iP "^%s$" /usr/share/dict/words', $word);
 		$result = shell_exec($cmd);
 		return !empty($result);

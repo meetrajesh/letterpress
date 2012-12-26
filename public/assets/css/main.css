@@ -20,19 +20,21 @@ td.disabled {
 }
 
 td.cplayer {
-  background-color: skyblue;
+  background-color: #3399FF;
 }
 
 td.cplayer.locked {
-  background-color: navy;
+  background-color: #3366CC;
+  color: #fff;
 }
 
 td.oplayer {
-  background-color: red;
+  background-color: #F80000;
 }
 
 td.oplayer.locked {
   background-color: maroon;
+  color: #fff;
 }
 
 p.letters {
