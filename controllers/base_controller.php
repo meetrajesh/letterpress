@@ -11,6 +11,8 @@ class BaseController {
     protected function __construct() {
         $this->_tpl = new template();
 
+		// remove cookies from $_REQUEST
+		$_REQUEST = array_diff_key($_REQUEST, $_COOKIE);
         if (!empty($_POST) || !empty($_GET) || !empty($_REQUEST)) {
             csrf::check();
         }
