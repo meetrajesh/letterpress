@@ -176,4 +176,8 @@ class game extends model_base {
 		return true;
 	}
 
+	public function form_action() {
+		return spf(empty($this->player2->id) ? '/game/start/%d' : '/game/move/%d', $this->id);
+	}
+
 }

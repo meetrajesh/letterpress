@@ -148,11 +148,13 @@ class BaseController {
 	}
 
 	private function _attempt_login($action) {
-		if ($action === array('index', 'login')) {
-			return;
-		}
 		// check if we know who this user is
-		if (false === $token = session::get_login_token()) {
+		if (false !== $token = session::get_login_token()) {
+			if (player::set_current($token)) {
+				return true;
+			}
+		}
+		if ($action !== array('index', 'login')) {
 			// show login screen
 			$this->_redirect('/login');
 		}

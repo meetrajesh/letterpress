@@ -12,6 +12,10 @@
     <? $t->block('meta'); ?>
     <? $t->endblock(true); ?>
 
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="assets/js/libs/jquery-1.7.2.min.js"><\/script>')</script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui.min.js"></script>
+
     <link href='http://fonts.googleapis.com/css?family=Bree+Serif|Open+Sans:400,400italic,600,700' rel='stylesheet' type='text/css'>
 
     <? foreach ($this->_stylesheets as $stylesheet): ?>
@@ -22,16 +26,18 @@
 
     <h2>Welcome to Letterpress for the Web</h2>
 
-    <p>With this version of letterpress, you don&#39;t need an iphone, or a game center account! All you need is an email address to play.</p>
+    <p>With this version of letterpress, you don&#39;t need an iPhone, or a Game Center account! All you need is an email address to play.</p>
+    <hr/>
 
     <div class="container_12" id="main-content">
         <? $t->block('content'); ?>
         <? $t->endblock(true); ?>
     </div>
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="assets/js/libs/jquery-1.7.2.min.js"><\/script>')</script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui.min.js"></script>
+    <hr/>
+
+    <? $t->block('footer'); ?>
+    <? $t->endblock(true); ?>
 
     <script>
         $(document).data('view_data', <?= json_encode($this->_get_view_data($data)); ?>);

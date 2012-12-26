@@ -20,16 +20,23 @@ class IndexController extends BaseController {
     }
 
 	public function login() {
+		if (player::get_current()) {
+			$this->_redirect('/');
+		}
+
 		if (!empty($_POST['email'])) {
 			$email = trim($_POST['email']);
-			if (!$token = player::exists($email)) {
-				$token = player::add($email);
+			if (!is_valid_email($email)) {
+				$this->_set_flash('error', 'Please enter a valid email address');
+			} else {
+				if (!$token = player::exists($email)) {
+					$token = player::add($email);
+				}
+				session::set_login_token($token);
+				$this->_redirect('/');
 			}
-			session::set_login_token($token);
-			$this->_redirect('/');
-		} else {
-			$this->_render('login');
 		}
+		$this->_render('login');
 	}
     
 }

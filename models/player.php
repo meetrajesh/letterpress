@@ -3,6 +3,7 @@
 class player extends model_base {
 
 	public $id, $token, $email;
+	public static $_current_player = null;
 
 	public static function get($id) {
 		return self::_assign_db_row_to_obj(new player, 'players', $id);
@@ -16,8 +17,17 @@ class player extends model_base {
 		return self::_assign_db_row_to_obj(new player, 'players', $email, 'email');
 	}
 
+	public static function set_current($token) {
+		$player = player::get_by_token($token);
+		if (!empty($player->id)) {
+			self::$_current_player = $player;
+			return true;
+		}
+		return false;
+	}
+
 	public static function get_current() {
-		return self::get_by_token(session::get_login_token());
+		return self::$_current_player;
 	}
 
 	public function get_games() {

@@ -1,18 +1,18 @@
 <? $t->block('content'); ?>
+    <? $this->_render_partial('_flash'); ?>
+    <?
+    foreach ($data['games'] as $i => $game) {
+    	$data['game'] = $game;
+        $this->_render_partial('_game', $data);
+    	if ($i != count($data['games'])-1) {
+			echo '<hr/>';
+		}
+    }
+    ?>
+<? $t->endblock(); ?>
 
-<? $this->_render_partial('_flash'); ?>
-
-<?
-foreach ($data['games'] as $game) {
-	echo '<hr/>';
-	$data['game'] = $game;
-	$data['form_action'] = $this->_url(spf('/game/move/%d', $game->id));
-    $this->_render_partial('_game', $data);
-}
-?>
-
-<br/><hr/><p><a href="<?=$this->_url('/game/new')?>">Create new game</a></p>
-
+<? $t->block('footer'); ?>
+    <p><a href="<?=$this->_url('/game/new')?>">Create new game</a></p>
 <? $t->endblock(); ?>
 
 <? $this->_render('base', $data); ?>

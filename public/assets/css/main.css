@@ -7,8 +7,7 @@ div.enabled {
 }
 
 div.disabled {
-  background-color: #ddd;
-  width: 240px;
+  background-color: #ededed;
 }
 
 td {

@@ -10,7 +10,6 @@ class GameController extends BaseController {
 		$game = empty($gid) ? game::create($player1) : game::get($gid);
 
 		$data['games'][0] = $game;
-		$data['form_action'] = $this->_url(spf('/game/start/%d', $game->id));
 		$this->_render('index', $data);
 	}
 
@@ -40,8 +39,10 @@ class GameController extends BaseController {
 
 	public function show($args) {
 		$gid = isset($args[0]) ? $args[0] : 0;
-		$data['form_action'] = $this->_url(spf('/game/move/%d', $gid));
 		$data['game'] = game::get($gid);
+		if (empty($data['game']->id)) {
+			$this->_redirect('/');
+		}
 		$this->_render('show', $data);
 	}
 

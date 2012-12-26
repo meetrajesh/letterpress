@@ -4,7 +4,7 @@ $myturn = (player::get_current()->id == $game->current_player->id);
 $other_player = (player::get_current()->id == $game->player1->id) ? $game->player2 : $game->player1;
 ?>
 
-<form method="post" action="<?=$data['form_action']?>">
+<form method="post" action="<?=$this->_url($game->form_action())?>">
     <?=csrf::html_tag()?>
 
     <? if (empty($other_player->id)): ?>
