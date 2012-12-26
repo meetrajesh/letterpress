@@ -6,15 +6,15 @@ class player extends model_base {
 	public static $_current_player = null;
 
 	public static function get($id) {
-		return self::_assign_db_row_to_obj(new player, 'players', $id);
+		return self::_assign_db_row_to_obj(new player, 'lp_players', $id);
 	}
 
 	public static function get_by_token($token) {
-		return self::_assign_db_row_to_obj(new player, 'players', $token, 'token');
+		return self::_assign_db_row_to_obj(new player, 'lp_players', $token, 'token');
 	}
 
 	public static function get_by_email($email) {
-		return self::_assign_db_row_to_obj(new player, 'players', $email, 'email');
+		return self::_assign_db_row_to_obj(new player, 'lp_players', $email, 'email');
 	}
 
 	public static function set_current($token) {
@@ -32,7 +32,7 @@ class player extends model_base {
 
 	public function get_games() {
 		$games = array();
-		$game_ids = db::fetch_all('SELECT id FROM games WHERE is_deleted=0 AND (player1_id=%d OR player2_id=%1$d) AND player1_id*player2_id != 0 ORDER BY id DESC', $this->id);
+		$game_ids = db::fetch_all('SELECT id FROM lp_games WHERE is_deleted=0 AND (player1_id=%d OR player2_id=%1$d) AND player1_id*player2_id != 0 ORDER BY id DESC', $this->id);
 		foreach ($game_ids as $game) {
 			$games[] = game::get($game['id']);
 		}
@@ -40,14 +40,14 @@ class player extends model_base {
 	}
 
 	public static function exists($email) {
-		return db::result('SELECT token FROM players WHERE email="%s"', $email);
+		return db::result('SELECT token FROM lp_players WHERE email="%s"', $email);
 	}
 
 	public static function add($email) {
 		$token = self::exists($email);
 		if (!$token) {
 			$token = security::get_rand_token();
-			db::query('INSERT INTO players (email, token, created_at) VALUES ("%s", "%s", NOW())', $email, $token);
+			db::query('INSERT INTO lp_players (email, token, created_at) VALUES ("%s", "%s", NOW())', $email, $token);
 		}
 		return $token;
 	}

@@ -10,13 +10,13 @@ class game extends model_base {
 	public $is_deleted = 0;
 
 	public static function get($id) {
-		$game = self::_assign_db_row_to_obj(new game, 'games', $id);
+		$game = self::_assign_db_row_to_obj(new game, 'lp_games', $id);
 		$game->letters = myexplode(',', $game->letters);
 
 		// check deleted status
 		if ($game->is_deleted) {
 			$game->id = null;
-			return self::_assign_db_row_to_obj($game, 'games', 0);
+			return self::_assign_db_row_to_obj($game, 'lp_games', 0);
 		}
 
 		$game->player1 = player::get($game->player1_id);
@@ -97,14 +97,14 @@ class game extends model_base {
             $table[$i] = array_rand_value($letters);
         }
 
-		db::query('INSERT INTO games (player1_id, current_player_id, letters, created_at) VALUES (%d, %1$d, "%s", NOW())', $player->id, implode(',', $table));
+		db::query('INSERT INTO lp_games (player1_id, current_player_id, letters, created_at) VALUES (%d, %1$d, "%s", NOW())', $player->id, implode(',', $table));
         return self::get(db::insert_id());
 	}
 
 	public function set_player_2($player2_email) {
 		player::add($player2_email);
 		$this->player2 = player::get_by_email($player2_email);
-		db::query('UPDATE games SET player2_id=%d WHERE id=%d', $this->player2->id, $this->id);
+		db::query('UPDATE lp_games SET player2_id=%d WHERE id=%d', $this->player2->id, $this->id);
 		return true;
 	}
 
@@ -152,10 +152,10 @@ class game extends model_base {
 		$this->current_player_id = ($this->current_turn() == 'player1') ? $this->player2->id : $this->player1->id;
 
 		// save new tile owners
-		db::query('UPDATE games SET player1_tiles="%s", player2_tiles="%s", current_player_id=%d WHERE id=%d', implode(',', $this->player1_tiles), implode(',', $this->player2_tiles), $this->current_player_id, $this->id);
+		db::query('UPDATE lp_games SET player1_tiles="%s", player2_tiles="%s", current_player_id=%d WHERE id=%d', implode(',', $this->player1_tiles), implode(',', $this->player2_tiles), $this->current_player_id, $this->id);
 
 		// save word in db
-		db::query('INSERT INTO words_played (game_id, word) VALUES (%d, "%s")', $this->id, $word);
+		db::query('INSERT INTO lp_words_played (game_id, word) VALUES (%d, "%s")', $this->id, $word);
 
 		if ($is_first_move) {
 			$this->_invite_opponent_by_email($this->player1, $this->player2);
@@ -200,7 +200,7 @@ class game extends model_base {
 
 	private function _is_word_played($word) {
 		// mysql LIKE is case insensitive
-		return db::has_row('SELECT null FROM words_played WHERE game_id=%d AND word LIKE "%%%s%%"', $this->id, $word);
+		return db::has_row('SELECT null FROM lp_words_played WHERE game_id=%d AND word LIKE "%%%s%%"', $this->id, $word);
 	}
 
 	private function _is_valid_word_length($word) {
@@ -233,7 +233,7 @@ class game extends model_base {
 	}
 
 	public function delete() {
-		db::query('UPDATE games SET is_deleted=1 WHERE id=%d', $this->id);
+		db::query('UPDATE lp_games SET is_deleted=1 WHERE id=%d', $this->id);
 	}
 
 }
