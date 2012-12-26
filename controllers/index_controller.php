@@ -25,7 +25,7 @@ class IndexController extends BaseController {
 		}
 
 		$email = !empty($args[0]) ? $args[0] : '';
-		$email = empty($email) && !empty($_POST['email']) ? $_POST['email'] : '';
+		$email = empty($email) && !empty($_POST['email']) ? $_POST['email'] : $email;
 		$email = trim($email);
 
 		if (!empty($email)) {
