@@ -14,7 +14,7 @@ $other_player = (player::get_current()->id == $game->player1->id) ? $game->playe
     <? elseif ($game->is_game_over()): ?>
         <p>
             <strong>Game over!</strong>
-            <? if ($game->determine_winner()->id == player::get_current()->id): ?>
+            <? if ($game->did_i_win()): ?>
                 You won!
             <? else: ?>
 				You lost :(
@@ -38,24 +38,8 @@ $other_player = (player::get_current()->id == $game->player1->id) ? $game->playe
                 		echo '</tr><tr>';
                 	}
 					// figure out the state of this tile
-					$class = '';
-					// if i am player 1
-					if (player::get_current()->id == $game->player1->id) {
-						if (in_array($i, $game->player1_tiles)) {
-							$class = 'cplayer';
-						} elseif (in_array($i, $game->player2_tiles)) {
-							$class = 'oplayer';
-						}
-					} else { // i am player 2
-						if (in_array($i, $game->player2_tiles)) {
-							$class = 'cplayer';
-						} elseif (in_array($i, $game->player1_tiles)) {
-							$class = 'oplayer';
-						}
-					}							
-					if ($game->is_tile_locked($i)) {
-						$class .= ' locked';
-					}
+					$class = $game->get_tile_state($i);
+					$class .= $game->is_tile_locked($i) ? ' locked' : '';
                 	echo spf('<td class="%s" data-coord="%d">%s</td>', $class, hsc($i), hsc($letter));
                 }
                 ?>

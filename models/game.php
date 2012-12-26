@@ -31,7 +31,7 @@ class game extends model_base {
 		return $game;
 	}
 
-	public function current_turn() {
+	private function _current_turn() {
 		return ($this->current_player->id == $this->player1->id) ? 'player1' : 'player2';
 	}
 
@@ -59,14 +59,19 @@ class game extends model_base {
 		return count(array_unique(array_merge($this->player1_tiles, $this->player2_tiles))) == 25;
 	}
 
-	public function determine_winner() {
+	private function _determine_winner() {
 		return (count($this->player1_tiles) > count($this->player2_tiles)) ? $this->player1 : $this->player2;
+	}
+
+	public function did_i_win() {
+		return $this->determine_winner()->id == player::get_current()->id;
 	}
 
 	private function _neighbor_tiles($tile) {
 
 		$neighbors = array();
 		$n = 5;
+		$s = $n * $n;
 
 		// not a left tile
 		if ($tile % $n != 0) {
@@ -84,7 +89,7 @@ class game extends model_base {
 		}
 
 		// not a bottom-row tile
-		if ($tile < ($n*$n-5)) {
+		if ($tile < ($s - $n)) {
 			$neighbors[] = $tile + $n;
 		}
 		
@@ -149,7 +154,7 @@ class game extends model_base {
 		$this->_determine_new_tile_owners($coords);
 
 		// update current player to be the other player
-		$this->current_player_id = ($this->current_turn() == 'player1') ? $this->player2->id : $this->player1->id;
+		$this->current_player_id = ($this->_current_turn() == 'player1') ? $this->player2->id : $this->player1->id;
 
 		// save new tile owners
 		db::query('UPDATE lp_games SET player1_tiles="%s", player2_tiles="%s", current_player_id=%d WHERE id=%d', implode(',', $this->player1_tiles), implode(',', $this->player2_tiles), $this->current_player_id, $this->id);
@@ -160,7 +165,7 @@ class game extends model_base {
 		if ($is_first_move) {
 			$this->_invite_opponent_by_email($this->player1, $this->player2);
 		} else {
-			if ($this->current_turn() == 'player1') {
+			if ($this->_current_turn() == 'player1') {
 				$this->_send_email_notif_on_move($this->player1, $this->player2);
 			} else {
 				$this->_send_email_notif_on_move($this->player2, $this->player1);
@@ -175,7 +180,8 @@ class game extends model_base {
 	}
 
 	private function _determine_new_tile_owners($coords) {
-		if ($this->current_turn() == 'player1') {
+		// current turn hasn't flipped yet
+		if ($this->_current_turn() == 'player1') {
 			$new_coords = array_diff($coords, $this->player2_locked_tiles);
 			$this->player1_tiles = array_unique(array_merge($this->player1_tiles, $new_coords));
 			$this->player2_tiles = array_diff($this->player2_tiles, $new_coords);
@@ -184,6 +190,8 @@ class game extends model_base {
 			$this->player2_tiles = array_unique(array_merge($this->player2_tiles, $new_coords));
 			$this->player1_tiles = array_diff($this->player1_tiles, $new_coords);
 		}
+		// re-calc locked tiles since tile ownerships have just changed
+		$this->_find_locked_tiles();
 	}
 
 	public function is_tile_locked($tile) {
@@ -234,6 +242,25 @@ class game extends model_base {
 
 	public function delete() {
 		db::query('UPDATE lp_games SET is_deleted=1 WHERE id=%d', $this->id);
+	}
+
+	public function get_tile_state($tile) {
+		$class = '';
+		// if i am player 1
+		if (player::get_current()->id == $this->player1->id) {
+			if (in_array($tile, $this->player1_tiles)) {
+				$class = 'cplayer';
+			} elseif (in_array($tile, $this->player2_tiles)) {
+				$class = 'oplayer';
+			}
+		} else { // i am player 2
+			if (in_array($tile, $this->player2_tiles)) {
+				$class = 'cplayer';
+			} elseif (in_array($tile, $this->player1_tiles)) {
+				$class = 'oplayer';
+			}
+		}
+		return $class;
 	}
 
 }
