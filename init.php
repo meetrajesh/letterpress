@@ -7,7 +7,7 @@ if (file_exists('./init.local.php')) {
     require './init.local.php';
 }
 
-add_define('IS_DEV', false);
+defined('IS_DEV') or define('IS_DEV', false);
 ini_set('display_errors', IS_DEV);
 ini_set('html_errors', IS_DEV);
 
