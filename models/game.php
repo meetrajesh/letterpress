@@ -266,4 +266,8 @@ class game extends model_base {
 		return $class;
 	}
 
+	public function last_word_played() {
+		return db::result('SELECT word FROM lp_words_played WHERE game_id=%d ORDER BY id DESC LIMIT 1', $this->id);
+	}
+
 }

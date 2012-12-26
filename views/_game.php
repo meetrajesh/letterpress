@@ -3,6 +3,7 @@ $game = $data['game'];
 $myturn = (player::get_current()->id == $game->current_player->id);
 $game_active = $myturn && !$game->is_game_over();
 $other_player = (player::get_current()->id == $game->player1->id) ? $game->player2 : $game->player1;
+$last_word_played = $game->last_word_played();
 ?>
 
 <form method="post" action="<?=$this->_url($game->form_action())?>">
@@ -22,12 +23,20 @@ $other_player = (player::get_current()->id == $game->player1->id) ? $game->playe
         </p>
     <? elseif ($myturn): ?>
         <p><strong>Your move with <?=hsc($other_player->email)?>!</strong></p>
+		<? if (!empty($last_word_played)): ?>
+			<p>They played: <?=hsc($last_word_played)?></p>
+		<? endif; ?>
     <? else: ?>
         <p>Waiting for move from <?=hsc($other_player->email)?></p>
+		<? if (!empty($last_word_played)): ?>
+			<p>You played: <?=hsc($last_word_played)?></p>
+		<? endif; ?>
 	<? endif; ?>
     
-    <input type="hidden" id="coords_<?=$game->id?>" name="coords" />
-    <p class="letters">Your word: <span id="word_<?=$game->id?>"></span></p>
+	<? if ($game_active): ?>
+		<input type="hidden" id="coords_<?=$game->id?>" name="coords" />
+		<p class="letters">Your word: <span id="word_<?=$game->id?>"></span></p>
+	<? endif; ?>
       
     <div class="<?=$game_active ? 'enabled' : 'disabled'?>" game-id="<?=$game->id?>">
         <table>
