@@ -7,3 +7,4 @@ init.local.php
 .project
 .settings
 backups
+error_log

@@ -1,14 +1,14 @@
 <?php
 
 ini_set('error_reporting', E_ALL | E_STRICT);
-ini_set('display_errors', IS_DEV);
-ini_set('html_errors', true);
-
 chdir(dirname(__FILE__));
 
 if (file_exists('./init.local.php')) {
     require './init.local.php';
 }
+
+ini_set('display_errors', IS_DEV);
+ini_set('html_errors', IS_DEV);
 
 session_start();
 date_default_timezone_set('America/New_York');
@@ -16,7 +16,7 @@ date_default_timezone_set('America/New_York');
 require './lib/functions.php';
 
 // to generate a new secret, run
-//    foreach (range(1,32) as $i) { $secret .= chr(rand(33,126)); } echo $secret;
+//    $secret = ''; foreach (range(1,32) as $i) { @$secret .= chr(rand(33,126)); } echo $secret;
 // on phpsh
 add_define('CSRF_SECRET', '<Bot:e,42DCRNW5b/hH7nBPIUaYn&lEA');
 add_define('UPLOAD_MAX_SIZE', 10*1024*1024); // 10M
