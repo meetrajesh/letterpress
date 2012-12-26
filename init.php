@@ -1,7 +1,7 @@
 <?php
 
 ini_set('error_reporting', E_ALL | E_STRICT);
-ini_set('display_errors', true);
+ini_set('display_errors', IS_DEV);
 ini_set('html_errors', true);
 
 chdir(dirname(__FILE__));
@@ -21,8 +21,8 @@ require './lib/functions.php';
 add_define('CSRF_SECRET', '<Bot:e,42DCRNW5b/hH7nBPIUaYn&lEA');
 add_define('UPLOAD_MAX_SIZE', 10*1024*1024); // 10M
 add_define('STATIC_PREFIX', '/assets');
-add_define('WEB_PREFIX', '/letterpress_php/public');
-add_define('WEB_ROOT', dirname(__FILE__) . WEB_PREFIX);
+add_define('PATH_PREFIX', '/letterpress/public');
+add_define('WEB_ROOT', dirname(__FILE__) . PATH_PREFIX);
 add_define('TEMPLATE_ROOT', dirname(__FILE__) . '/views');
 
 // clean up $_GET and $_POST, ensure all values are strings (no arrays)

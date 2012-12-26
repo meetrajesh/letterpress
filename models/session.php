@@ -7,7 +7,7 @@ class session {
     }
 
 	public static function set_login_token($token) {
-		return setcookie('lp_token', $token, time()+60*60*24*30, WEB_PREFIX);
+		return setcookie('lp_token', $token, time()+60*60*24*30, PATH_PREFIX);
 	}
 
 	public static function get_login_token() {

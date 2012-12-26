@@ -24,8 +24,8 @@ class IndexController extends BaseController {
 			$this->_redirect('/');
 		}
 
-		$email = !empty($_POST['email']) ? $_POST['email'] : '';
 		$email = !empty($args[0]) ? $args[0] : '';
+		$email = empty($email) && !empty($_POST['email']) ? $_POST['email'] : '';
 		$email = trim($email);
 
 		if (!empty($email)) {
