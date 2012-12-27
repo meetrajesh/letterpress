@@ -105,12 +105,12 @@ class game extends model_base {
 	public static function create(player $player) {
 		$letters = range('A', 'Z');
 		$end = pow(self::$board_size, 2) - 1;
-        foreach (range(0, $end) as $i) {
-            $table[$i] = array_rand_value($letters);
-        }
+		foreach (range(0, $end) as $i) {
+			$table[$i] = array_rand_value($letters);
+		}
 
 		db::query('INSERT INTO games (player1_id, current_player_id, letters, created_at) VALUES (%d, %1$d, "%s", now())', $player->id, implode(',', $table));
-        return self::get(db::insert_id());
+		return self::get(db::insert_id());
 	}
 
 	public function set_player_2($player2_email) {
