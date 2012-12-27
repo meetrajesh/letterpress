@@ -64,7 +64,7 @@ class game extends model_base {
 	}
 
 	public function did_i_win() {
-		return $this->determine_winner()->id == player::get_current()->id;
+		return $this->_determine_winner()->id == player::get_current()->id;
 	}
 
 	private function _neighbor_tiles($tile) {
@@ -219,6 +219,7 @@ class game extends model_base {
 	}
 
 	private function _is_valid_word($word) {
+		# 
 		# return true;
 		$cmd = spf('grep -iP "^%s$" /usr/share/dict/words', $word);
 		$result = shell_exec($cmd);
@@ -266,7 +267,7 @@ class game extends model_base {
 		return $class;
 	}
 
-	public function last_word_played() {
+	public function get_last_word_played() {
 		return db::result('SELECT word FROM lp_words_played WHERE game_id=%d ORDER BY id DESC LIMIT 1', $this->id);
 	}
 
@@ -280,6 +281,33 @@ class game extends model_base {
 		$ret['winning'] = ($you == $them) ? '' : $ret['winning'];
 
 		return $ret;
+	}
+
+	public static function sort($games) {
+
+		if (count($games) < 2) {
+			return $games;
+		}
+
+		usort($games, function($a, $b) {
+		  // classify the game as myturn, your turn, or completed
+			foreach (array($a, $b) as $game) {
+				if ($game->is_game_over()) {
+					$game->score = -1;
+				} elseif (player::get_current()->id == $game->current_player->id) {
+					$game->score = $game->get_last_word_ts() + 1;
+				} else {
+					$game->score = 0;
+				}
+			}
+			return strcmp($a->score, $b->score);
+		});
+
+		return array_reverse($games);
+	}
+
+	public function get_last_word_ts() {
+		return db::result('SELECT UNIX_TIMESTAMP(created_at) FROM lp_words_played WHERE game_id=%d ORDER BY id DESC LIMIT 1', $this->id);
 	}
 
 }

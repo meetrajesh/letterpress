@@ -3,7 +3,7 @@ $game = $data['game'];
 $myturn = (player::get_current()->id == $game->current_player->id);
 $game_active = $myturn && !$game->is_game_over();
 $other_player = (player::get_current()->id == $game->player1->id) ? $game->player2 : $game->player1;
-$last_word_played = $game->last_word_played();
+$last_word_played = $game->get_last_word_played();
 $scores = $game->get_scores();
 ?>
 

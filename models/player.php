@@ -36,7 +36,7 @@ class player extends model_base {
 		foreach ($game_ids as $game) {
 			$games[] = game::get($game['id']);
 		}
-		return $games;
+		return game::sort($games);
 	}
 
 	public static function exists($email) {
@@ -47,7 +47,7 @@ class player extends model_base {
 		$token = self::exists($email);
 		if (!$token) {
 			$token = security::get_rand_token();
-			db::query('INSERT INTO lp_players (email, token, created_at) VALUES ("%s", "%s", NOW())', $email, $token);
+			db::query('INSERT INTO lp_players (email, token, created_at) VALUES ("%s", "%s", now())', $email, $token);
 		}
 		return $token;
 	}
