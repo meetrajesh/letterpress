@@ -6,7 +6,7 @@ class csrf {
         $unique = (empty($unique)) ? self::_unique() : $unique;
         $csrf = !empty($csrf) ? $csrf : (!empty($_REQUEST['csrf']) ? $_REQUEST['csrf'] : '');
         if (empty($csrf) || !security::hmac_check(CSRF_SECRET, $unique, $csrf)) {
-            die('csrf check fail');
+            die('The CSRF check has failed.');
         }
     }
 

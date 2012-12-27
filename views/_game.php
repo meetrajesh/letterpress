@@ -68,6 +68,6 @@ $scores = $game->get_scores();
     <p><input type="submit" name="btn_submit" value="Submit Move!" /></p>
 
     <? if (!empty($other_player->id)): ?>
-        <p><a class="warning" href="<?=$this->_url('/game/delete/' . $game->id)?>">Delete Game</a></p>
+        <p><a class="warning" href="<?=spf('%s?%s', $this->_url('/game/delete/' . $game->id), csrf::param()) ?>">Delete Game</a></p>
 	<? endif; ?>
 </form>

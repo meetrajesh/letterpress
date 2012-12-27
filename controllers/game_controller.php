@@ -66,6 +66,7 @@ class GameController extends BaseController {
 		$gid = isset($args[0]) ? $args[0] : 0;
 		$game = game::get($gid);
 		if ($game && $game->id) {
+			csrf::check();
 			if (in_array(player::get_current()->id, array($game->player1_id, $game->player2_id))) {
 				$game->delete();
 			}
