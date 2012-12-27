@@ -34,6 +34,7 @@ foreach (array('_GET', '_POST', '_REQUEST', '_COOKIE') as $sglobal) {
 }
 
 $routes = array('/$' => array('index', 'index'), // empty route, just root domain
+				'/game/turn' => array('index', 'index'), // same as index
 				'/game/new' => array('game', 'new_game'),
 				'/game/start' => array('game', 'start'),
 				'/game/show' => array('game', 'show'),
@@ -44,4 +45,3 @@ $routes = array('/$' => array('index', 'index'), // empty route, just root domai
 				);
 
 return $routes;
-
