@@ -58,20 +58,18 @@
 			my_score[gid] += direction * parseInt(td.attr('delta-me'));
 			their_score[gid] += direction * parseInt(td.attr('delta-them'));
 		}
+
 		var html = "Score: ";
+
 		// update my score
-		if (my_score[gid] > their_score[gid]) {
-			html += "<strong>You (" + my_score[gid] + ")</strong>";
-		} else {
-			html += "You (" + my_score[gid] + ")";
-		}
+		str = "You (" + my_score[gid] + ")";
+		html += (my_score[gid] > their_score[gid]) ? ("<strong>" + str + "</strong>") : str;
 		html += ", ";
+
 		// update their score
-		if (my_score[gid] < their_score[gid]) {
-			html += "<strong>Them (" + their_score[gid] + ")</strong>";
-		} else {
-			html += "Them (" + their_score[gid] + ")";
-		}
+		str = "Them (" + their_score[gid] + ")";
+		html += (my_score[gid] < their_score[gid]) ? ("<strong>" + str + "</strong>") : str;
+
 		td.parents('div.game_div').siblings('p[name="score"]').html(html);
 	}
 
