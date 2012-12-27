@@ -4,6 +4,7 @@ $myturn = (player::get_current()->id == $game->current_player->id);
 $game_active = $myturn && !$game->is_game_over();
 $other_player = (player::get_current()->id == $game->player1->id) ? $game->player2 : $game->player1;
 $last_word_played = $game->last_word_played();
+$scores = $game->get_scores();
 ?>
 
 <form method="post" action="<?=$this->_url($game->form_action())?>">
@@ -24,20 +25,27 @@ $last_word_played = $game->last_word_played();
     <? elseif ($myturn): ?>
         <p><strong>Your move with <?=hsc($other_player->email)?>!</strong></p>
 		<? if (!empty($last_word_played)): ?>
-			<p>They played: <?=hsc($last_word_played)?></p>
+			<p>They played: <em><?=hsc($last_word_played)?></em></p>
 		<? endif; ?>
     <? else: ?>
         <p>Waiting for move from <?=hsc($other_player->email)?></p>
 		<? if (!empty($last_word_played)): ?>
-			<p>You played: <?=hsc($last_word_played)?></p>
+			<p>You played: <em><?=hsc($last_word_played)?></em></p>
 		<? endif; ?>
 	<? endif; ?>
     
+	<? if (!empty($other_player->id)): ?>
+		<p>Score:
+			<? echo spf(($scores['winning'] == 'you') ? '<strong>You (%s)</strong>' : 'You (%s)', $scores['you']) ?>,
+			<? echo spf(($scores['winning'] == 'them') ? '<strong>Them (%s)</strong>' : 'Them (%s)', $scores['them']) ?>,
+		</p>
+	<? endif; ?>
+
 	<? if ($game_active): ?>
 		<input type="hidden" id="coords_<?=$game->id?>" name="coords" />
 		<p class="letters">Your word: <span id="word_<?=$game->id?>"></span></p>
 	<? endif; ?>
-      
+
     <div class="<?=$game_active ? 'enabled' : 'disabled'?>" game-id="<?=$game->id?>">
         <table>
             <tr>
@@ -58,7 +66,7 @@ $last_word_played = $game->last_word_played();
 
     <p><input type="submit" name="btn_submit" value="Submit Move!" /></p>
 
-    <? if (!empty($game->player2->id)): ?>
+    <? if (!empty($other_player->id)): ?>
         <p><a class="warning" href="<?=$this->_url('/game/delete/' . $game->id)?>">Delete Game</a></p>
 	<? endif; ?>
 </form>

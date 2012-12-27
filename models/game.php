@@ -270,4 +270,16 @@ class game extends model_base {
 		return db::result('SELECT word FROM lp_words_played WHERE game_id=%d ORDER BY id DESC LIMIT 1', $this->id);
 	}
 
+	public function get_scores() {
+		$you = (player::get_current()->id == $this->player1->id) ? count($this->player1_tiles) : count($this->player2_tiles);
+		$them = (player::get_current()->id == $this->player1->id) ? count($this->player2_tiles) : count($this->player1_tiles);
+
+		$ret = array('you' => $you, 'them' => $them);
+
+		$ret['winning'] = ($you > $them) ? 'you' : 'them';
+		$ret['winning'] = ($you == $them) ? '' : $ret['winning'];
+
+		return $ret;
+	}
+
 }
