@@ -104,7 +104,8 @@ class game extends model_base {
 
 	public static function create(player $player) {
 		$letters = range('A', 'Z');
-        foreach (range(0,24) as $i) {
+		$end = pow(self::$board_size, 2) - 1;
+        foreach (range(0, $end) as $i) {
             $table[$i] = array_rand_value($letters);
         }
 
