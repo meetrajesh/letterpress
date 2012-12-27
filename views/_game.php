@@ -70,5 +70,3 @@ $scores = $game->get_scores();
         <p><a class="warning" href="<?=$this->_url('/game/delete/' . $game->id)?>">Delete Game</a></p>
 	<? endif; ?>
 </form>
-
-

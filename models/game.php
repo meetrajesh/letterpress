@@ -9,6 +9,9 @@ class game extends model_base {
 	public $current_player_id, $current_player;
 	public $is_deleted = 0;
 
+	// private cache of last words played
+	private static $_last_game_words = array();
+
 	public static function get($id) {
 		$game = self::_assign_db_row_to_obj(new game, 'lp_games', $id);
 		$game->letters = myexplode(',', $game->letters);
@@ -56,7 +59,7 @@ class game extends model_base {
 
 	public function is_game_over() {
 		// check if game is over (i.e. every tile is used up)
-		return count(array_unique(array_merge($this->player1_tiles, $this->player2_tiles))) == 25;
+		return count($this->player1_tiles) + count($this->player2_tiles) == 25;
 	}
 
 	private function _determine_winner() {
@@ -268,7 +271,11 @@ class game extends model_base {
 	}
 
 	public function get_last_word_played() {
-		return db::result('SELECT word FROM lp_words_played WHERE game_id=%d ORDER BY id DESC LIMIT 1', $this->id);
+		return (string)db::result('SELECT word FROM lp_words_played WHERE game_id=%d ORDER BY id DESC LIMIT 1', $this->id);
+	}
+
+	public function get_last_word_ts() {
+		return (int)db::result('SELECT UNIX_TIMESTAMP(created_at) FROM lp_words_played WHERE game_id=%d ORDER BY id DESC LIMIT 1', $this->id);
 	}
 
 	public function get_scores() {
@@ -290,24 +297,26 @@ class game extends model_base {
 		}
 
 		usort($games, function($a, $b) {
-		  // classify the game as myturn, your turn, or completed
+			// classify the game as myturn, your turn, or completed
 			foreach (array($a, $b) as $game) {
 				if ($game->is_game_over()) {
-					$game->score = -1;
+					$game->state = -1;
 				} elseif (player::get_current()->id == $game->current_player->id) {
-					$game->score = $game->get_last_word_ts() + 1;
+					$game->state = 1;
 				} else {
-					$game->score = 0;
+					$game->state = 0;
 				}
 			}
-			return strcmp($a->score, $b->score);
+			if ($a->state != $b->state) {
+				return strcmp($a->state, $b->state);
+			} else {
+				// return games based on the ts of the last move
+				return strcmp($a->get_last_word_ts(), $b->get_last_word_ts());
+			}
+
 		});
 
 		return array_reverse($games);
-	}
-
-	public function get_last_word_ts() {
-		return db::result('SELECT UNIX_TIMESTAMP(created_at) FROM lp_words_played WHERE game_id=%d ORDER BY id DESC LIMIT 1', $this->id);
 	}
 
 }
