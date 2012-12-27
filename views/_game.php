@@ -49,7 +49,7 @@ $scores = $game->get_scores();
 			<tr>
 				<?php
 				foreach ($game->letters as $i => $letter) {
-					if ($i != 0 && $i % 5 == 0) {
+					if ($i != 0 && $i % game::$board_size == 0) {
 						echo '</tr><tr>';
 					}
 					// figure out the state of this tile

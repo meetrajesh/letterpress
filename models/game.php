@@ -2,6 +2,9 @@
 
 class game extends model_base {
 
+	// 5x5 game board, like in the original game
+	public static $board_size = 5;
+
 	public $id;
 	public $player1_id, $player1, $player1_tiles, $player1_locked_tiles;
 	public $player2_id, $player2, $player2_tiles, $player2_locked_tiles;
@@ -59,7 +62,7 @@ class game extends model_base {
 
 	public function is_game_over() {
 		// check if game is over (i.e. every tile is used up)
-		return count($this->player1_tiles) + count($this->player2_tiles) == 25;
+		return count($this->player1_tiles) + count($this->player2_tiles) == pow(self::$board_size, 2);
 	}
 
 	private function _determine_winner() {
@@ -73,7 +76,7 @@ class game extends model_base {
 	private function _neighbor_tiles($tile) {
 
 		$neighbors = array();
-		$n = 5;
+		$n = self::$board_size;
 		$s = $n * $n;
 
 		// not a left tile
