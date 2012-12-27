@@ -34,12 +34,10 @@ $scores = $game->get_scores();
 		<? endif; ?>
 	<? endif; ?>
     
-	<? if (!empty($other_player->id)): ?>
-		<p name="score">Score:
-			<? echo spf(($scores['winning'] == 'you') ? '<strong>You (%s)</strong>' : 'You (%s)', $scores['you']) ?>,
-			<? echo spf(($scores['winning'] == 'them') ? '<strong>Them (%s)</strong>' : 'Them (%s)', $scores['them']) ?>,
-		</p>
-	<? endif; ?>
+	<p name="score">Score:
+		<? echo spf(($scores['winning'] == 'you') ? '<strong>You (%s)</strong>' : 'You (%s)', $scores['you']) ?>,
+		<? echo spf(($scores['winning'] == 'them') ? '<strong>Them (%s)</strong>' : 'Them (%s)', $scores['them']) ?>
+	</p>
 
 	<? if ($game_active): ?>
 		<input type="hidden" id="coords_<?=$game->id?>" name="coords" />
