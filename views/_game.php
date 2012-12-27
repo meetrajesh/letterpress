@@ -35,7 +35,7 @@ $scores = $game->get_scores();
 	<? endif; ?>
     
 	<? if (!empty($other_player->id)): ?>
-		<p>Score:
+		<p name="score">Score:
 			<? echo spf(($scores['winning'] == 'you') ? '<strong>You (%s)</strong>' : 'You (%s)', $scores['you']) ?>,
 			<? echo spf(($scores['winning'] == 'them') ? '<strong>Them (%s)</strong>' : 'Them (%s)', $scores['them']) ?>,
 		</p>
@@ -46,7 +46,7 @@ $scores = $game->get_scores();
 		<p class="letters">Your word: <span id="word_<?=$game->id?>"></span></p>
 	<? endif; ?>
 
-    <div class="<?=$game_active ? 'enabled' : 'disabled'?>" game-id="<?=$game->id?>">
+    <div class="game_div <?=$game_active ? 'enabled' : 'disabled'?>" game-id="<?=$game->id?>" my-score="<?=hsc($scores['you'])?>" their-score="<?=hsc($scores['them'])?>">
         <table>
             <tr>
                 <?php
@@ -55,9 +55,12 @@ $scores = $game->get_scores();
                 		echo '</tr><tr>';
                 	}
 					// figure out the state of this tile
-					$class = $game->get_tile_state($i);
+					$class_map = array(0 => '', 1 => 'cplayer', -1 => 'oplayer');
+					$class = $class_map[$game->get_tile_state($i)];
 					$class .= $game->is_tile_locked($i) ? ' locked' : '';
-                	echo spf('<td class="%s" data-coord="%d">%s</td>', $class, hsc($i), hsc($letter));
+					// figure out the deltas of each person's score when this tile is played
+					$deltas = $game->get_tile_deltas($i);
+					echo spf('<td class="%s" data-coord="%d" delta-me="%d" delta-them="%d">%s</td>', $class, hsc($i), $deltas['me'], $deltas['them'], hsc($letter));
                 }
                 ?>
             </tr>

@@ -252,22 +252,30 @@ class game extends model_base {
 	}
 
 	public function get_tile_state($tile) {
-		$class = '';
 		// if i am player 1
 		if (player::get_current()->id == $this->player1->id) {
 			if (in_array($tile, $this->player1_tiles)) {
-				$class = 'cplayer';
+				return 1;
 			} elseif (in_array($tile, $this->player2_tiles)) {
-				$class = 'oplayer';
+				return -1;
 			}
 		} else { // i am player 2
 			if (in_array($tile, $this->player2_tiles)) {
-				$class = 'cplayer';
+				return 1;
 			} elseif (in_array($tile, $this->player1_tiles)) {
-				$class = 'oplayer';
+				return -1;
 			}
 		}
-		return $class;
+		return 0;
+	}
+
+	public function get_tile_deltas($tile) {
+		$state = $this->get_tile_state($tile);
+		if ($this->is_tile_locked($tile) || $state == 1) {
+			return array('me' => 0, 'them' => 0);
+		} else {
+			return array('me' => 1, 'them' => $state);
+		}
 	}
 
 	public function get_last_word_played() {
