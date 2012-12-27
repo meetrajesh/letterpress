@@ -13,13 +13,13 @@ class game extends model_base {
 	private static $_last_game_words = array();
 
 	public static function get($id) {
-		$game = self::_assign_db_row_to_obj(new game, 'lp_games', $id);
+		$game = self::_assign_db_row_to_obj(new game, 'games', $id);
 		$game->letters = myexplode(',', $game->letters);
 
 		// check deleted status
 		if ($game->is_deleted) {
 			$game->id = null;
-			return self::_assign_db_row_to_obj($game, 'lp_games', 0);
+			return self::_assign_db_row_to_obj($game, 'games', 0);
 		}
 
 		$game->player1 = player::get($game->player1_id);
@@ -105,14 +105,14 @@ class game extends model_base {
             $table[$i] = array_rand_value($letters);
         }
 
-		db::query('INSERT INTO lp_games (player1_id, current_player_id, letters, created_at) VALUES (%d, %1$d, "%s", now())', $player->id, implode(',', $table));
+		db::query('INSERT INTO games (player1_id, current_player_id, letters, created_at) VALUES (%d, %1$d, "%s", now())', $player->id, implode(',', $table));
         return self::get(db::insert_id());
 	}
 
 	public function set_player_2($player2_email) {
 		player::add($player2_email);
 		$this->player2 = player::get_by_email($player2_email);
-		db::query('UPDATE lp_games SET player2_id=%d WHERE id=%d', $this->player2->id, $this->id);
+		db::query('UPDATE games SET player2_id=%d WHERE id=%d', $this->player2->id, $this->id);
 		return true;
 	}
 
@@ -161,7 +161,7 @@ class game extends model_base {
 		$this->_determine_new_tile_owners($coords);
 
 		// save word in db for future checking
-		db::query('INSERT INTO lp_words_played (game_id, player_id, word, created_at) VALUES (%d, %d, "%s", now())', $this->id, $current_player->id, $word);
+		db::query('INSERT INTO words_played (game_id, player_id, word, created_at) VALUES (%d, %d, "%s", now())', $this->id, $current_player->id, $word);
 		$turn_id = db::insert_id();
 
 		// flip current player to be the other player
@@ -169,7 +169,7 @@ class game extends model_base {
 		$this->current_player = $other_player;
 
 		// save new tile owners, and current_player_id
-		db::query('UPDATE lp_games SET player1_tiles="%s", player2_tiles="%s", current_player_id=%d WHERE id=%d', implode(',', $this->player1_tiles), implode(',', $this->player2_tiles), $this->current_player_id, $this->id);
+		db::query('UPDATE games SET player1_tiles="%s", player2_tiles="%s", current_player_id=%d WHERE id=%d', implode(',', $this->player1_tiles), implode(',', $this->player2_tiles), $this->current_player_id, $this->id);
 
 		// send emails if applicable
 		if ($is_first_move) {
@@ -215,7 +215,7 @@ class game extends model_base {
 
 	private function _is_word_played($word) {
 		// mysql LIKE is case insensitive
-		return db::has_row('SELECT null FROM lp_words_played WHERE game_id=%d AND word LIKE "%s%%"', $this->id, $word);
+		return db::has_row('SELECT null FROM words_played WHERE game_id=%d AND word LIKE "%s%%"', $this->id, $word);
 	}
 
 	private function _is_valid_word_length($word) {
@@ -251,7 +251,7 @@ class game extends model_base {
 	}
 
 	public function delete() {
-		db::query('UPDATE lp_games SET is_deleted=1 WHERE id=%d', $this->id);
+		db::query('UPDATE games SET is_deleted=1 WHERE id=%d', $this->id);
 	}
 
 	public function get_tile_state($tile) {
@@ -282,11 +282,11 @@ class game extends model_base {
 	}
 
 	public function get_last_word_played() {
-		return (string)db::result('SELECT word FROM lp_words_played WHERE game_id=%d ORDER BY id DESC LIMIT 1', $this->id);
+		return (string)db::result('SELECT word FROM words_played WHERE game_id=%d ORDER BY id DESC LIMIT 1', $this->id);
 	}
 
 	public function get_last_word_ts() {
-		return (int)db::result('SELECT UNIX_TIMESTAMP(created_at) FROM lp_words_played WHERE game_id=%d ORDER BY id DESC LIMIT 1', $this->id);
+		return (int)db::result('SELECT UNIX_TIMESTAMP(created_at) FROM words_played WHERE game_id=%d ORDER BY id DESC LIMIT 1', $this->id);
 	}
 
 	public function get_scores() {

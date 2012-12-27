@@ -1,7 +1,8 @@
 Letterpress
 ===========
 
-This is a clone of the popular iOS app Letterpress using purely PHP and Javascript.
+This is a web-based clone of the popular iOS word-game Letterpress using
+purely PHP and Javascript.
 
 
 Dev Setup Instructions
