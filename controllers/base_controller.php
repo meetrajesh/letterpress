@@ -145,6 +145,7 @@ class BaseController {
 	protected function _before_render($action) {
 		$this->_add_js('js/game.js');
 		$this->_add_css('css/main.css');
+		$this->_add_css('css/normalize.css');
 
 		$this->_attempt_login($action);
 	}
