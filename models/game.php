@@ -12,9 +12,6 @@ class game extends model_base {
 	public $current_player_id, $current_player;
 	public $is_deleted = 0;
 
-	// private cache of last words played
-	private static $_last_game_words = array();
-
 	public static function get($id) {
 		$game = self::_assign_db_row_to_obj(new game, 'games', $id);
 		$game->letters = myexplode(',', $game->letters);

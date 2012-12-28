@@ -6,9 +6,9 @@
 <head>
     <meta charset="utf-8">
 
-    <title><? $t->block('title'); ?>Letterpress in PHP<? $t->endblock(true); ?></title>
+    <title><? $t->block('title'); ?>Letterpress for the Web<? $t->endblock(true); ?></title>
     <meta name="description" content="">
-    <meta property="og:site_name" content="Letterpress PHP" />
+    <meta property="og:site_name" content="Letterpress for the Web" />
     <? $t->block('meta'); ?>
     <? $t->endblock(true); ?>
 
