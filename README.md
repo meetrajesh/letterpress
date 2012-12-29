@@ -91,8 +91,8 @@ Dev Setup Instructions
 
      <pre>
      $secret = '';
-     foreach (range(1,32) as $i) {
-         $secret .= chr(rand(33,126));
+     foreach (range(1, 32) as $i) {
+         $secret .= chr(rand(33, 126));
      }
      echo $secret;
      </pre>
@@ -114,3 +114,4 @@ Dev Setup Instructions
     * Braces mandatory even for 1-line cases
     * Exactly 1-space before opening brace
     * Exactly 1-space after these keywords: if, elseif, for, foreach, while, and switch
+    * Exactly 1-space after commas in argument lists
