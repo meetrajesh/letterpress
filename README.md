@@ -48,7 +48,7 @@ $ mysql letterpress &lt; schema.sql
 
 1. Create a file called <code>init.local.php</code> in your letterpress git repo and put this in there:
 
-<code>
+<pre>
 &lt;?php
 
 define('BASE_URL', 'http://localhost');
@@ -60,7 +60,7 @@ define('DBHOST', 'localhost');
 define('DBUSER', '');
 define('DBPASS', '');
 define('DBNAME', 'letterpress');
-</code>
+</pre>
 
 1. Replace your database credentials above if different from above.
 
