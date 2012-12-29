@@ -17,9 +17,13 @@ Dev Setup Instructions
 
 ### Setup Instructions
 
-1. Fork the repo on github by going to https://github.com/meetrajesh/letterpress and clicking 'Fork' on the top-right-hand corner.
-1. Git clone your fork: <code>git clone https://github.com/<username>/letterpress.git</code>. Remember where you do this checkout. You will need it later.
-1. Setup a vhost in your apache config file. On Mac, the config file lives at /etc/apache2/httpd.conf. On Linux, it's typically at /etc/httpd/conf/httpd.conf. Depends on your distro.
+1. Fork and Clone GitHub repo
+    * Fork the repo on github by going to https://github.com/meetrajesh/letterpress and clicking 'Fork' on the top-right-hand corner.
+    * Git clone your fork: <code>git clone https://github.com/<username>/letterpress.git</code>. Remember where you do this checkout. You will need it later.
+
+1. Setup Apache VHost
+
+   * Setup a vhost in your apache config file. On Mac, the config file lives at /etc/apache2/httpd.conf. On Linux, it's typically at /etc/httpd/conf/httpd.conf. Depends on your distro.
 
    <pre>
    ### for letterpress ###
@@ -35,18 +39,24 @@ Dev Setup Instructions
    &lt;/VirtualHost>
    </pre>
    
-   Replace <code>[webroot]</code> with the full path of the parent directory
+   * Replace <code>[webroot]</code> with the full path of the parent directory
    that contains your letterpress git repo that you checked out in the
    previous step. So if you checked out your repo at
    <code>/home/john/phpwebroot/letterpress</code>, your [webroot] will be
    <code>/home/john/phpwebroot</code>
    
-   The <code>AllowOverride All</code> line is important. Don't forget it. It
+   * The <code>AllowOverride All</code> line is important. Don't forget it. It
    allows you to setup URL rewriting rules via an Apache-specific .htaccess
    config file which you can view here:
    https://github.com/meetrajesh/letterpress/blob/master/.htaccess
 
-1. Import the MySQL database locally. I've assumed you have a blank user with
+   * Restart Apache for the changes to take effect: <code>sudo
+   /etc/init.d/httpd restart</code> on Linux, and <code>sudo
+   /usr/sbin/apachectl restart</code> on Mac OS X.
+
+1. Setup MySQL DB
+
+   * Import the MySQL database locally. I've assumed you have a blank user with
    a blank password that has admin (or at least database creation) privileges:
 
    <pre>
@@ -54,7 +64,9 @@ Dev Setup Instructions
    $ mysql letterpress &lt; schema.sql
    </pre>
 
-1. Create a file called <code>init.local.php</code> in your letterpress root
+1. Override Config
+
+   * Create a file called <code>init.local.php</code> in your letterpress root
    directory and copy+paste this in there:
 
    <pre>
@@ -71,7 +83,7 @@ Dev Setup Instructions
    define('DBNAME', 'letterpress');
    </pre>
 
-1. Replace the CSRF secret with something randomly generated. Use this PHP
+   * Replace the CSRF secret with something randomly generated. Use this PHP
    code if you want to generate something random:
 
    <pre>
@@ -82,7 +94,7 @@ Dev Setup Instructions
    echo $secret;
    </pre>
 
-1. Replace your database credentials if different from the constants above.
+   * Replace your database credentials if different from the constants above.
 
 1. Navigate to http://localhost/letterpress on your browser. If everything
    was set up properly, the game should load successfully. If not, ping me at
