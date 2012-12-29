@@ -25,19 +25,19 @@ Dev Setup Instructions
 
     * Setup a vhost in your apache config file. On Mac, the config file lives at /etc/apache2/httpd.conf. On Linux, it's typically at /etc/httpd/conf/httpd.conf. Depends on your distro.
  
-    <pre>
-    ### for letterpress ###
-    &lt;VirtualHost *:80>
-      ServerName localhost
-      DocumentRoot "[webroot]>"
-      &lt;Directory "[webroot]">
-        Options +FollowSymlinks
-        Order allow,deny
-        Allow from all
-        AllowOverride All
-      &lt;/Directory>
-    &lt;/VirtualHost>
-    </pre>
+      <pre>
+      ### for letterpress ###
+      &lt;VirtualHost *:80>
+        ServerName localhost
+        DocumentRoot "[webroot]>"
+        &lt;Directory "[webroot]">
+          Options +FollowSymlinks
+          Order allow,deny
+          Allow from all
+          AllowOverride All
+        &lt;/Directory>
+      &lt;/VirtualHost>
+      </pre>
     
     * Replace <code>[webroot]</code> with the full path of the parent directory
     that contains your letterpress git repo that you checked out in the
