@@ -22,8 +22,9 @@ Dev Setup Instructions
     * Git clone your fork: <code>git clone https://github.com/<username>/letterpress.git</code>. Remember where you do this checkout. You will need it later.
 
 1. Setup Apache VHost
-
-    * Setup a vhost in your apache config file. On Mac, the config file lives at /etc/apache2/httpd.conf. On Linux, it's typically at /etc/httpd/conf/httpd.conf. Depends on your distro.
+    * Setup a vhost in your apache config file. On Mac, the config file lives
+      at /etc/apache2/httpd.conf. On Linux, it's typically at
+      /etc/httpd/conf/httpd.conf. Depends on your distro.
  
       <pre>
       ### for letterpress ###
@@ -38,26 +39,23 @@ Dev Setup Instructions
         &lt;/Directory>
       &lt;/VirtualHost>
       </pre>
-    
-    * Replace <code>[webroot]</code> with the full path of the parent directory
-    that contains your letterpress git repo that you checked out in the
-    previous step. So if you checked out your repo at
-    <code>/home/john/phpwebroot/letterpress</code>, your [webroot] will be
-    <code>/home/john/phpwebroot</code>
-    
-    * The <code>AllowOverride All</code> line is important. Don't forget it. It
-    allows you to setup URL rewriting rules via an Apache-specific .htaccess
-    config file which you can view here:
-    https://github.com/meetrajesh/letterpress/blob/master/.htaccess
- 
+    * Replace <code>[webroot]</code> with the full path of the parent
+      directory that contains your letterpress git repo that you checked out
+      in the previous step. So if you checked out your repo at
+      <code>/home/john/phpwebroot/letterpress</code>, your [webroot] will be
+      <code>/home/john/phpwebroot</code>
+    * The <code>AllowOverride All</code> line is important. Don't forget
+      it. It allows you to setup URL rewriting rules via an Apache-specific
+      .htaccess config file which you can view here:
+      https://github.com/meetrajesh/letterpress/blob/master/.htaccess
     * Restart Apache for the changes to take effect: <code>sudo
-    /etc/init.d/httpd restart</code> on Linux, and <code>sudo
-    /usr/sbin/apachectl restart</code> on Mac OS X.
+      /etc/init.d/httpd restart</code> on Linux, and <code>sudo
+      /usr/sbin/apachectl restart</code> on Mac OS X.
 
 1. Setup MySQL DB
 
     * Import the MySQL database locally. I've assumed you have a blank user with
-    a blank password that has admin (or at least database creation) privileges:
+      a blank password that has admin (or at least database creation) privileges:
  
     <pre>
     $ mysqladmin create letterpress
@@ -67,33 +65,31 @@ Dev Setup Instructions
 1. Override Config
 
    * Create a file called <code>init.local.php</code> in your letterpress root
-   directory and copy+paste this in there:
+     directory and copy+paste this in there:
 
-   <pre>
-   &lt;?php
-   
-   define('BASE_URL', 'http://localhost');
-   define('IS_DEV', true);
-   define('CSRF_SECRET', '&lt;put some random string here thats about 40 chars long>');
-   
-   // database credentials
-   define('DBHOST', 'localhost');
-   define('DBUSER', '');
-   define('DBPASS', '');
-   define('DBNAME', 'letterpress');
-   </pre>
-
+     <pre>
+     &lt;?php
+     
+     define('BASE_URL', 'http://localhost');
+     define('IS_DEV', true);
+     define('CSRF_SECRET', '&lt;put some random string here thats about 40 chars long>');
+     
+     // database credentials
+     define('DBHOST', 'localhost');
+     define('DBUSER', '');
+     define('DBPASS', '');
+     define('DBNAME', 'letterpress');
+     </pre>
    * Replace the CSRF secret with something randomly generated. Use this PHP
-   code if you want to generate something random:
+     code if you want to generate something random:
 
-   <pre>
-   $secret = '';
-   foreach (range(1,32) as $i) {
-       $secret .= chr(rand(33,126));
-   }
-   echo $secret;
-   </pre>
-
+     <pre>
+     $secret = '';
+     foreach (range(1,32) as $i) {
+         $secret .= chr(rand(33,126));
+     }
+     echo $secret;
+     </pre>
    * Replace your database credentials if different from the constants above.
 
 1. Navigate to http://localhost/letterpress on your browser. If everything
