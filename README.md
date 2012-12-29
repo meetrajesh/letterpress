@@ -8,7 +8,7 @@ purely PHP and Javascript.
 Dev Setup Instructions
 ----------------------
 
-### Minimum requirements:
+### Minimum Requirements
 
 * Running Apache Server
 * PHP 5.3.6+. May work on PHP 5.2.x for now, but no guarantees it will continue to work going forward
@@ -17,24 +17,25 @@ Dev Setup Instructions
 
 ### Setup instructions:
 
-1. Git clone this repo: <code>git clone https://github.com/meetrajesh/letterpress.git</code>. Remember where you put this repo. You will need it later.
+1. Fork the repo on github by going to https://github.com/meetrajesh/letterpress and clicking 'Fork' on the top-right-hand corner
+1. Git clone your fork: <code>git clone https://github.com/<username>/letterpress.git</code>. Remember where you do this checkout. You will need it later.
 1. Setup a vhost in your apache config file. On Mac, the config file lives at /etc/apache2/httpd.conf
 
-<code>
+<pre><code>
 ### for letterpress ###
 <VirtualHost *:80>
   ServerName localhost
-  DocumentRoot "<letterpress_dir>"
-  <Directory "<letterpress_dir>">
+  DocumentRoot "<webroot>"
+  <Directory "<webroot>">
     Options +FollowSymlinks
     Order allow,deny
     Allow from all
     AllowOverride All
   </Directory>
 </VirtualHost>
-</code>
+</code></pre>
 
-Replace <code><letter_press_dir></code> with the full path of your letterpress git repo that you checked out in the previous step.
+Replace <pre><code><webroot></code></pre> with the full path of your letterpress git repo that you checked out in the previous step.
 
 The <code>AllowOverride All</code> line is important. Don't forget it. It allows you to setup URL rewriting rules via .htaccess config files.
 
