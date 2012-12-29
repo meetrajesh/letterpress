@@ -25,8 +25,8 @@ Dev Setup Instructions
 ### for letterpress ###
 &lt;VirtualHost *:80>
   ServerName localhost
-  DocumentRoot "&lt;webroot>"
-  &lt;Directory "&lt;webroot>">
+  DocumentRoot "[webroot]>"
+  &lt;Directory "[webroot]">
     Options +FollowSymlinks
     Order allow,deny
     Allow from all
@@ -35,16 +35,16 @@ Dev Setup Instructions
 &lt;/VirtualHost>
 </pre>
 
-Replace <code>&lt;webroot></code> with the full path of your letterpress git repo that you checked out in the previous step.
+Replace <code>[webroot]</code> with the full path of your letterpress git repo that you checked out in the previous step.
 
-The <code>AllowOverride All</code> line is important. Don't forget it. It allows you to setup URL rewriting rules via .htaccess config files.
+The <code>AllowOverride All</code> line is important. Don't forget it. It allows you to setup URL rewriting rules via a Apache-specific .htaccess config file which you can view here: https://github.com/meetrajesh/letterpress/blob/master/.htaccess
 
 1. Import the MySQL database locally
 
-<code>
+<pre>
 $ mysqladmin create letterpress
 $ mysql letterpress &lt; schema.sql
-</code>
+</pre>
 
 1. Create a file called <code>init.local.php</code> in your letterpress git repo and put this in there:
 
