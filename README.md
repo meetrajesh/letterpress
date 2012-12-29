@@ -13,13 +13,13 @@ Dev Setup Instructions
 * Running Apache Server
 * PHP 5.3.6+. May work on PHP 5.2.x for now, but no guarantees it will continue to work going forward
 * MySQL Server + Client
-* git client
+* git client v1.7+
 
 ### Setup Instructions
 
 1. Fork and Clone GitHub repo
     * Fork the repo on github by going to https://github.com/meetrajesh/letterpress and clicking 'Fork' on the top-right-hand corner.
-    * Git clone your fork: <code>git clone https://github.com/<username>/letterpress.git</code>. Remember where you do this checkout. You will need it later.
+    * Git clone your fork: <code>git clone https://github.com/&lt;username>/letterpress.git</code>. Remember where you do this checkout. You will need it later.
 
 1. Setup Apache VHost
     * Setup a vhost in your apache config file. On Mac, the config file lives
