@@ -53,7 +53,6 @@ Dev Setup Instructions
       /usr/sbin/apachectl restart</code> on Mac OS X.
 
 1. Setup MySQL DB
-
     * Import the MySQL database locally. I've assumed you have a blank user with
       a blank password that has admin (or at least database creation) privileges:
  
@@ -63,7 +62,6 @@ Dev Setup Instructions
       </pre>
 
 1. Override Config
-
    * Create a file called <code>init.local.php</code> in your letterpress root
      directory and copy+paste this in there:
 
