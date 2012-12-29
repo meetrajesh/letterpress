@@ -17,9 +17,9 @@ Dev Setup Instructions
 
 ### Setup Instructions
 
-1. Fork the repo on github by going to https://github.com/meetrajesh/letterpress and clicking 'Fork' on the top-right-hand corner
+1. Fork the repo on github by going to https://github.com/meetrajesh/letterpress and clicking 'Fork' on the top-right-hand corner.
 1. Git clone your fork: <code>git clone https://github.com/<username>/letterpress.git</code>. Remember where you do this checkout. You will need it later.
-1. Setup a vhost in your apache config file. On Mac, the config file lives at /etc/apache2/httpd.conf. On Linux, it's typically at /etc/httpd/conf/httpd.conf. Depends on your distro
+1. Setup a vhost in your apache config file. On Mac, the config file lives at /etc/apache2/httpd.conf. On Linux, it's typically at /etc/httpd/conf/httpd.conf. Depends on your distro.
 
    <pre>
    ### for letterpress ###
@@ -46,7 +46,7 @@ Dev Setup Instructions
    config file which you can view here:
    https://github.com/meetrajesh/letterpress/blob/master/.htaccess
 
-1. Import the MySQL database locally
+1. Import the MySQL database locally (I've assumed you have a blank user with a blank password that has near-root privileges):
 
    <pre>
    $ mysqladmin create letterpress
@@ -69,7 +69,7 @@ Dev Setup Instructions
    define('DBNAME', 'letterpress');
    </pre>
 
-1. Replace your database credentials above if different from above.
+1. Replace your database credentials if different from the constants above.
 
 1. Navigate to http://localhost/letterpress on your browser. If everything
    was set up properly, the game should load successfully. If not, ping me at
@@ -81,7 +81,5 @@ Dev Setup Instructions
    submit a pull request using github from your master branch to my master
    branch.
 
-1. Please try to adhere to the coding style already found inside the project.
-
-
-
+1. Please try to adhere to the coding style already found inside the project
+   before you submit your pull request.
