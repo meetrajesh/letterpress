@@ -23,46 +23,46 @@ Dev Setup Instructions
 
 1. Setup Apache VHost
 
-   * Setup a vhost in your apache config file. On Mac, the config file lives at /etc/apache2/httpd.conf. On Linux, it's typically at /etc/httpd/conf/httpd.conf. Depends on your distro.
-
-   <pre>
-   ### for letterpress ###
-   &lt;VirtualHost *:80>
-     ServerName localhost
-     DocumentRoot "[webroot]>"
-     &lt;Directory "[webroot]">
-       Options +FollowSymlinks
-       Order allow,deny
-       Allow from all
-       AllowOverride All
-     &lt;/Directory>
-   &lt;/VirtualHost>
-   </pre>
-   
-   * Replace <code>[webroot]</code> with the full path of the parent directory
-   that contains your letterpress git repo that you checked out in the
-   previous step. So if you checked out your repo at
-   <code>/home/john/phpwebroot/letterpress</code>, your [webroot] will be
-   <code>/home/john/phpwebroot</code>
-   
-   * The <code>AllowOverride All</code> line is important. Don't forget it. It
-   allows you to setup URL rewriting rules via an Apache-specific .htaccess
-   config file which you can view here:
-   https://github.com/meetrajesh/letterpress/blob/master/.htaccess
-
-   * Restart Apache for the changes to take effect: <code>sudo
-   /etc/init.d/httpd restart</code> on Linux, and <code>sudo
-   /usr/sbin/apachectl restart</code> on Mac OS X.
+    * Setup a vhost in your apache config file. On Mac, the config file lives at /etc/apache2/httpd.conf. On Linux, it's typically at /etc/httpd/conf/httpd.conf. Depends on your distro.
+ 
+    <pre>
+    ### for letterpress ###
+    &lt;VirtualHost *:80>
+      ServerName localhost
+      DocumentRoot "[webroot]>"
+      &lt;Directory "[webroot]">
+        Options +FollowSymlinks
+        Order allow,deny
+        Allow from all
+        AllowOverride All
+      &lt;/Directory>
+    &lt;/VirtualHost>
+    </pre>
+    
+    * Replace <code>[webroot]</code> with the full path of the parent directory
+    that contains your letterpress git repo that you checked out in the
+    previous step. So if you checked out your repo at
+    <code>/home/john/phpwebroot/letterpress</code>, your [webroot] will be
+    <code>/home/john/phpwebroot</code>
+    
+    * The <code>AllowOverride All</code> line is important. Don't forget it. It
+    allows you to setup URL rewriting rules via an Apache-specific .htaccess
+    config file which you can view here:
+    https://github.com/meetrajesh/letterpress/blob/master/.htaccess
+ 
+    * Restart Apache for the changes to take effect: <code>sudo
+    /etc/init.d/httpd restart</code> on Linux, and <code>sudo
+    /usr/sbin/apachectl restart</code> on Mac OS X.
 
 1. Setup MySQL DB
 
-   * Import the MySQL database locally. I've assumed you have a blank user with
-   a blank password that has admin (or at least database creation) privileges:
-
-   <pre>
-   $ mysqladmin create letterpress
-   $ mysql letterpress &lt; schema.sql
-   </pre>
+    * Import the MySQL database locally. I've assumed you have a blank user with
+    a blank password that has admin (or at least database creation) privileges:
+ 
+    <pre>
+    $ mysqladmin create letterpress
+    $ mysql letterpress &lt; schema.sql
+    </pre>
 
 1. Override Config
 
