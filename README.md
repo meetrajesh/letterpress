@@ -22,15 +22,15 @@ Dev Setup Instructions
       https://github.com/meetrajesh/letterpress and clicking 'Fork' on the
       top-right-hand corner.
     * Change into your phpwebroot folder (where you store all your PHP
-      projects) and git clone your fork: <code>git clone
+      projects) and git clone your new fork: <code>git clone
       https://github.com/[username]/letterpress.git</code>. Remember where
       you do this checkout. You will need it later. Recommended location is
       ~/phpwebroot
 
 1. Setup Apache VHost
-    * Setup a vhost in your apache config file. On Mac, the config file lives
-      at /etc/apache2/httpd.conf. On Linux, it's typically at
-      /etc/httpd/conf/httpd.conf. Depends on your distro.
+    * Setup a vhost in your apache config file as shown below. On Mac, the
+      config file lives inside /etc/apache2/httpd.conf. On Linux, it's
+      typically at /etc/httpd/conf/httpd.conf. Depends on your distro.
  
       <pre>
       ### for letterpress ###
@@ -59,12 +59,13 @@ Dev Setup Instructions
       /usr/sbin/apachectl restart</code> on Mac OS X.
 
 1. Setup MySQL DB
-    * Import the MySQL database locally. I've assumed you have a blank user with
-      a blank password that has admin (or at least database creation) privileges:
+    * Import the MySQL database schema locally. I've assumed you have a blank
+      user with a blank password that has admin (or at least database
+      creation) privileges:
  
       <pre>
       $ mysqladmin create letterpress
-      $ mysql letterpress &lt; schema.sql
+      $ mysql letterpress &lt; /home/john/phpwebroot/letterpress/schema.sql
       </pre>
 
 1. Override Config
@@ -84,8 +85,9 @@ Dev Setup Instructions
      define('DBPASS', '');
      define('DBNAME', 'letterpress');
      </pre>
-   * Replace the CSRF secret with something randomly generated. Use this PHP
-     code if you want to generate something random:
+   * Replace your local database credentials if different from the constants above.
+   * Replace the CSRF secret with a randomly generated string. Use this PHP
+     code if you want to generate a 32-character random string:
 
      <pre>
      $secret = '';
@@ -94,7 +96,6 @@ Dev Setup Instructions
      }
      echo $secret;
      </pre>
-   * Replace your database credentials if different from the constants above.
 
 1. Navigate to http://localhost/letterpress on your browser. If everything
    was set up properly, the game should load successfully. If not, ping me at
@@ -106,5 +107,10 @@ Dev Setup Instructions
    submit a pull request using github from your master branch to my master
    branch.
 
-1. Please try to adhere to the coding style already found inside the project
-   before you submit your pull request.
+1. Please try to adhere to the coding style already found in the project
+   before you submit your pull request. Most notably:
+    * Tabs instead of spaces for indentation (except in README.md where we use spaces)
+    * Opening brace on same line. Closing brace on new line.
+    * Braces mandatory even for 1-line cases
+    * Exactly 1-space before opening brace
+    * Exactly 1-space after these keywords: if, elseif, for, foreach, while, and switch
