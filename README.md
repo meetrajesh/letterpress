@@ -42,18 +42,20 @@ Dev Setup Instructions
    <code>/home/john/phpwebroot</code>
    
    The <code>AllowOverride All</code> line is important. Don't forget it. It
-   allows you to setup URL rewriting rules via a Apache-specific .htaccess
+   allows you to setup URL rewriting rules via an Apache-specific .htaccess
    config file which you can view here:
    https://github.com/meetrajesh/letterpress/blob/master/.htaccess
 
-1. Import the MySQL database locally (I've assumed you have a blank user with a blank password that has near-root privileges):
+1. Import the MySQL database locally. I've assumed you have a blank user with
+   a blank password that has admin (or at least database creation) privileges:
 
    <pre>
    $ mysqladmin create letterpress
    $ mysql letterpress &lt; schema.sql
    </pre>
 
-1. Create a file called <code>init.local.php</code> in your letterpress git repo and put this in there:
+1. Create a file called <code>init.local.php</code> in your letterpress root
+   directory and copy+paste this in there:
 
    <pre>
    &lt;?php
@@ -67,6 +69,17 @@ Dev Setup Instructions
    define('DBUSER', '');
    define('DBPASS', '');
    define('DBNAME', 'letterpress');
+   </pre>
+
+1. Replace the CSRF secret with something randomly generated. Use this PHP
+   code if you want to generate something random:
+
+   <pre>
+   $secret = '';
+   foreach (range(1,32) as $i) {
+       $secret .= chr(rand(33,126));
+   }
+   echo $secret;
    </pre>
 
 1. Replace your database credentials if different from the constants above.

@@ -17,7 +17,7 @@ date_default_timezone_set('America/New_York');
 require './lib/functions.php';
 
 // to generate a new secret, run
-//    $secret = ''; foreach (range(1,32) as $i) { @$secret .= chr(rand(33,126)); } echo $secret;
+//    $secret = ''; foreach (range(1,32) as $i) { $secret .= chr(rand(33,126)); } echo $secret;
 // on phpsh
 add_define('CSRF_SECRET', '<Bot:e,42DCRNW5b/hH7nBPIUaYn&lEA');
 add_define('UPLOAD_MAX_SIZE', 10*1024*1024); // 10M
