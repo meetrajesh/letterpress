@@ -57,10 +57,10 @@ Dev Setup Instructions
     * Import the MySQL database locally. I've assumed you have a blank user with
       a blank password that has admin (or at least database creation) privileges:
  
-    <pre>
-    $ mysqladmin create letterpress
-    $ mysql letterpress &lt; schema.sql
-    </pre>
+      <pre>
+      $ mysqladmin create letterpress
+      $ mysql letterpress &lt; schema.sql
+      </pre>
 
 1. Override Config
 
