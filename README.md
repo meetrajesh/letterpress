@@ -18,24 +18,24 @@ Dev Setup Instructions
 ### Setup instructions:
 
 1. Fork the repo on github by going to https://github.com/meetrajesh/letterpress and clicking 'Fork' on the top-right-hand corner
-1. Git clone your fork: <code>git clone https://github.com/<username>/letterpress.git</code>. Remember where you do this checkout. You will need it later.
+1. Git clone your fork: <code>git clone https://github.com/&lt;username>/letterpress.git</code>. Remember where you do this checkout. You will need it later.
 1. Setup a vhost in your apache config file. On Mac, the config file lives at /etc/apache2/httpd.conf. On Linux, it's typically at /etc/httpd/conf/httpd.conf. Depends on your distro
 
 <pre>
 ### for letterpress ###
-<VirtualHost *:80>
+&lt;VirtualHost *:80>
   ServerName localhost
-  DocumentRoot "[webroot]"
-  <Directory "<webroot>">
+  DocumentRoot "&lt;webroot>"
+  &lt;Directory "&lt;webroot>">
     Options +FollowSymlinks
     Order allow,deny
     Allow from all
     AllowOverride All
-  </Directory>
-</VirtualHost>
+  &lt;/Directory>
+&lt;/VirtualHost>
 </pre>
 
-Replace <code>[webroot]</code> with the full path of your letterpress git repo that you checked out in the previous step.
+Replace <code>&lt;webroot></code> with the full path of your letterpress git repo that you checked out in the previous step.
 
 The <code>AllowOverride All</code> line is important. Don't forget it. It allows you to setup URL rewriting rules via .htaccess config files.
 
@@ -43,17 +43,17 @@ The <code>AllowOverride All</code> line is important. Don't forget it. It allows
 
 <code>
 $ mysqladmin create letterpress
-$ mysql letterpress < schema.sql
+$ mysql letterpress &lt; schema.sql
 </code>
 
 1. Create a file called <code>init.local.php</code> in your letterpress git repo and put this in there:
 
 <code>
-<?php
+&lt;?php
 
 define('BASE_URL', 'http://localhost');
 define('IS_DEV', true);
-define('CSRF_SECRET', '<put some random string here thats about 40 chars long>');
+define('CSRF_SECRET', '&lt;put some random string here thats about 40 chars long>');
 
 // database credentials
 define('DBHOST', 'localhost');
